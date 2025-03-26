@@ -27,7 +27,7 @@ const Navbar = () => {
   }
   
   return (
-    <Stack pos={{base: 'relative', md: ''}} as='nav' w={{md:'150px', lg:'full'}} h='full' py={{base:'2', md:'7'}} borderColor='#0000004D' borderTopRightRadius={{base:'0', md:'45px'}} borderBottomRightRadius={{base:'0', md:'45px'}} borderWidth={{base:'0', md:'1px'}} justifyContent={{base:'', lg:'space-between'}} gap={{base:'0', md:'7'}}>
+    <Stack pos={{base: 'relative', md: ''}} as='nav' w={{md:'150px', lg:'full'}} h='full' py={{base:'2', md:'7'}} borderColor={{base:'#0000004D', _dark:rating}}  borderTopRightRadius={{base:'0', md:'45px'}} borderBottomRightRadius={{base:'0', md:'45px'}} borderWidth={{base:'0', md:'1px'}} justifyContent={{base:'', lg:'space-between'}} gap={{base:'0', md:'7'}}>
       <HStack justifyContent={{base: 'space-between', md:''}} pr={{base: '2', md:''}}>
         <HStack gap={{base: '2', lg: '5'}} pl={{base:'2', lg:'7'}}>
           <Logo />
@@ -77,15 +77,15 @@ const Navbar = () => {
         </HStack>
       </Stack>
 
-      <Stack hideBelow='lg' gap='2' alignSelf='center' w='170px' bg={gameBg} borderWidth='1px' rounded='xl' px='5' pt='7' pb='1.5' borderColor={primaryLighter}>
-        <Text color={descriptionL} fontWeight='semibold'>
+      <Stack hideBelow='lg' gap='2' alignSelf='center' w='170px' bg={{base:gameBg, _dark: primaryGradient}} borderWidth='1px' rounded='xl' px='5' pt='7' pb='1.5' borderColor={primaryLighter}>
+        <Text color={{base:descriptionL, _dark: rating}} fontWeight='semibold'>
           Play movie quizes and earn free tickets
         </Text>
         <Text color={rating} fontSize='xs' fontWeight='medium'>
           50k people are playing now
         </Text>
 
-        <Button bg={startPlaying} color={primaryColor} rounded='3xl' w='112px' alignSelf='center' fontSize='xs' fontWeight='medium'> Start playing</Button>
+        <Button bg={startPlaying} color={{base:primaryColor, _dark: 'white'}} rounded='3xl' w='112px' alignSelf='center' fontSize='xs' fontWeight='medium'> Start playing</Button>
       </Stack>
 
       {/* <HStack color={rating} p='3' transition='all 0.5s ease-in' _hover={styles}>

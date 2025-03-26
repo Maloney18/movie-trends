@@ -13,7 +13,7 @@ type incoming = {
 }
 
 const MovieCard = ({date, title, genre, imgSrc, movieId, type} : incoming) => {
-  const {gray400, gray900} = Colors.light
+  const {gray400, gray900, rating} = Colors.light
   const year = date ? new Date(date).getFullYear() :  ''
   const router = useRouter()
 
@@ -45,7 +45,7 @@ const MovieCard = ({date, title, genre, imgSrc, movieId, type} : incoming) => {
           (
             <>
               <Text color={gray400} fontWeight='bold' fontSize='xs'>{year}</Text>
-              <Text color={gray900} fontSize={{base:'md', lg:'lg'}} fontWeight='bold' wordWrap='break-word'>{title}</Text>
+              <Text color={{base:gray900, _dark: rating}} fontSize={{base:'md', lg:'lg'}} fontWeight='bold' wordWrap='break-word'>{title}</Text>
               <Text fontSize='xs' color={gray400} fontWeight='bold'>{genre}</Text>
             </>
           ) 

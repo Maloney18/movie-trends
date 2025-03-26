@@ -79,7 +79,7 @@ const Hero = () => {
             {currentMovie?.overview}
           </Text>
 
-          <Button onClick={() => router.push(`/movies/${currentMovie?.id}`)} bg={primaryColor} maxW={{base: '169px', md: '130px' , lg:'169px'}} p='1.5' rounded='md'>
+          <Button onClick={() => router.push(`/movies/${currentMovie?.id}`)} bg={primaryColor} maxW={{base: '169px', md: '130px' , lg:'169px'}} p='1.5' rounded='md' color='white'>
             <HStack gap='2'>
               <Watch />
               <Text>Watch Trailer</Text>

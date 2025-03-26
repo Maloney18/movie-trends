@@ -29,7 +29,7 @@ const MovieId = ({params}: params) => {
   const {isLoading: credIsLoading, data: credits, isError: credErrState, error: credErr} = movieCreditsQuery(movieId)
   const {isLoading: recommendIsLoading, data: recommendations, isError: reccomErrorState, error: reccomErr} = movieRecommendationsQuery(movieId)
   const router = useRouter()
-  const { title, primaryLighter, primaryColor, gameBg, description, descriptionL } = Colors.light
+  const { title, rating, gray400, primaryLighter, primaryColor, gameBg, description, descriptionL } = Colors.light
 
   // console.log(details)
 
@@ -119,7 +119,7 @@ const MovieId = ({params}: params) => {
 
         <Flex direction={{base: 'column', lg: 'row'}} gap={{base: '10', md: ''}} pl='2' alignItems={{base: '', md:'start'}}>
           <Stack maxW={{base:'full', lg: '82%'}} flex='1' gap={{base: '2.5', md: ''}}>
-            <Flex direction={{base: 'column', md: 'row'}} gap={{base: '', md:'2'}} color={title} alignItems={{base: '', md:'end'}}>
+            <Flex direction={{base: 'column', md: 'row'}} gap={{base: '', md:'2'}} color={{base: title, _dark: gray400}} alignItems={{base: '', md:'end'}}>
               <Text fontSize={{base: 'xl', lg: '2xl'}} fontWeight='black'>{details.title}</Text>
 
               {
@@ -136,17 +136,17 @@ const MovieId = ({params}: params) => {
             <HStack>
               {
                 details.genres.map((genre: {id: string, name: string}) => (
-                  <Text key={genre.id} borderWidth='1px' borderColor={gameBg} color={primaryColor} px='2' fontWeight='medium' rounded='3xl' fontSize={{base: 'xs',md: 'sm', lg: 'md'}}>{genre.name}</Text>
+                  <Text key={genre.id} borderWidth='1px' borderColor={{base:gameBg, _dark:rating}} color={{base:primaryColor, _dark: primaryLighter}} px='2' fontWeight='medium' rounded='3xl' fontSize={{base: 'xs',md: 'sm', lg: 'md'}}>{genre.name}</Text>
                 ))
               }
             </HStack>
 
             <Stack gap='1' mt='3' w={{base: '', lg:'70%'}}>
-            {details.tagline && <Text color={title} fontSize={{base: '',md: 'md', lg: 'lg'}}>"{details.tagline}"</Text>}
-              <Text color={description} fontSize={{base: '', md: 'md', lg: 'lg'}}>{details.overview}</Text>
+            {details.tagline && <Text color={{base: title, _dark: gray400}} fontSize={{base: '',md: 'md', lg: 'lg'}}>"{details.tagline}"</Text>}
+              <Text color={{base:description, _dark: rating}} fontSize={{base: '', md: 'md', lg: 'lg'}}>{details.overview}</Text>
             </Stack>
 
-            <Flex direction={{base: 'column', lg: 'row'}} alignItems='start' color={title} gap={{base: '5', md:'10'}} pt='2'>
+            <Flex direction={{base: 'column', lg: 'row'}} alignItems='start' color={{base: title, _dark: gray400}} gap={{base: '5', md:'10'}} pt='2'>
             { 
                 director && 
                 <Stack>
@@ -176,7 +176,7 @@ const MovieId = ({params}: params) => {
 
             { 
               topActors && 
-              <Stack pt='5' gap='2' color={title}>
+              <Stack pt='5' gap='2' color={{base: title, _dark: gray400}}>
                 <Text fontSize={{base:'xl'}} fontWeight='bold'>Top Casts</Text>
 
                 <HStack pr='2' overflowX='scroll' className='removeScroll' gap='5' alignItems='start' pb={{base:'', md:recommendations?.results.length === 0 ? '5' : ''}}>
@@ -199,10 +199,10 @@ const MovieId = ({params}: params) => {
             }
           </Stack>
           <Stack pb={{base:recommendations?.results.length === 0 ? '5' : '', md: ''}}>
-            <Stack color={title}>
+            <Stack color={{base: title, _dark: gray400}}>
               <Text fontWeight='bold' fontSize={{base:'lg'}}>Production {details.production_companies.length > 1 ? 'Companies' : 'Company'}</Text>
 
-              <Stack color={title} gap='2'>
+              <Stack color={{base: title, _dark: gray400}} gap='2'>
                 {
                   details.production_companies.map((company : {logo_path:string | null, id:string, origin_country: string, name: string}) => (
                       <HStack key={company.id} gap='2' alignItems='start'>
@@ -225,7 +225,7 @@ const MovieId = ({params}: params) => {
 
      { 
         recommendations?.results.length !== 0 &&
-        <Stack color={title} gap='7' pb='7' pl={{base: '2', md:''}}>
+        <Stack color={{base: title, _dark: gray400}} gap='7' pb='7' pl={{base: '2', md:''}}>
           <Stack gap={0}>
             <Flex direction={{base: 'column', md:'row'}} gap={{base: 0, md: '1.5'}}>
               <Text fontWeight='black' fontSize={{base: '2xl',md: '3xl', lg:'4xl'}}>Movie</Text>

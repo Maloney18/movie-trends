@@ -24,7 +24,7 @@ type incoming = {
 }
 
 const Collection = ({title, data, isError, isLoading, error}: incoming) => {
-  const { gray900, primaryColor } = Colors.light 
+  const { gray900, primaryColor, gray400 } = Colors.light 
 
   if ( isLoading ) {
     return (
@@ -45,7 +45,7 @@ const Collection = ({title, data, isError, isLoading, error}: incoming) => {
       {
         title &&
         <HStack justifyContent='space-between' px={{base: '2'}}>
-          <Text fontWeight='black' fontSize={{base:'xl', lg:'2xl'}} color={gray900}> {title} </Text>
+          <Text fontWeight='black' fontSize={{base:'xl', lg:'2xl'}} color={{base:gray900, _dark:gray400}}> {title} </Text>
           <HStack gap='1'>
             <Text fontSize={{base:'xs', lg:'md'}} cursor='pointer' color={primaryColor}>See more</Text>
             <SeeMore />
