@@ -58,7 +58,7 @@ const MovieId = ({params}: params) => {
   
       const video = data.items.filter((movie: {snippet: {title: string}}) => movie.snippet.title.startsWith(query))
     
-      console.log(video)
+      // console.log(video)
       if (video.length !== 0) {
         setYoutubeVideo(video[0].id.videoId)
         setLoading(false)
@@ -69,7 +69,7 @@ const MovieId = ({params}: params) => {
       setYoutubeVideo(data.items[0].id.videoId)
       setLoading(false)
       setClicked(prevState => !prevState)
-      console.log(); // Returns video details
+      // console.log(); // Returns video details
       
     } catch (error) {
       setLoading(false)

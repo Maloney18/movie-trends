@@ -79,9 +79,9 @@ const DetailsPage = ({details, credits, recommendations}: incoming) => {
   const producers : any = credits?.data?.crew.filter((member: { job: string }) => ['Producer', 'Executive Producer', 'Associate Producer', 'Line Producer'].includes(member.job))
   const topActors : any = credits?.data?.cast.filter((member: { known_for_department: string }) => member.known_for_department === 'Acting').slice(0,7)
 
-  console.log('details', details.data)
-  console.log('credits', credits.data)
-  console.log(producers)
+  // console.log('details', details.data)
+  // console.log('credits', credits.data)
+  // console.log(producers)
 
   return (
     <Stack as='section' h='full' pt={{base:'', md: '5'}} pr={{base: '', md:'2'}} p={{base: '1.5', md: ''}} gap={{base: '10', md:'16'}}>
