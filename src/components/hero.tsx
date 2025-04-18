@@ -1,23 +1,27 @@
 'use client'
-import { Stack, Box, HStack, Text, Button, Flex } from "@chakra-ui/react"
+import { Stack, Box, HStack, Text, Button, Flex, CardTitle } from "@chakra-ui/react"
 import Searchbar from "./searchBar"
 import { Watch } from "@/icons/icons"
 import { Colors } from "./color"
 import { Suspense, useEffect, useState } from "react"
 import { heroQuery } from "@/hooks/useRQueries"
 import { useRouter } from "next/navigation"
+import { AnimatePresence, easeIn, motion } from "framer-motion"
 
 type movie = {
   id: string,
   poster_path: string,
   overview: string,
-  original_title: string
+  original_title: string,
+  name: string
 }
+
+const MotionBox = motion.create(Box)
 
 const Hero = () => {
   const router = useRouter()
   const {isLoading, data, isError, error} = heroQuery()
-  const { primaryColor, gray400} = Colors.light
+  const { primaryColor, gray400, primaryLighter, primaryGradient} = Colors.light
   const [ nav, setNav ] = useState(0)
   const [ currentMovie, setCurrentMovie] = useState<movie>()
 
@@ -59,30 +63,61 @@ const Hero = () => {
     throw new Error(error.message)
   }
 
+  const bg = {
+    background: `linear-gradient(to top, #00000080, #00000080), url('https://image.tmdb.org/t/p/w500${currentMovie?.poster_path}') center/cover`,
+    AspectRatio: '1/1'
+  }
+
   return (
-    <Stack pos='relative' pt={{base: '2', md:'7'}} w='full' h='75vh' justifyContent='space-between' pb={{base:'2', md: '16',lg:'20'}} zIndex={1}>
-      <Box pos='absolute' top='0' h='75vh' w='full' zIndex={2} overflow='hidden' borderTopLeftRadius={{base:'xl', md:'0'}} borderBottomRightRadius={{base:'xl', md:'0'}}>
-        <img 
+    <Stack pos='relative' overflow='hidden' pt={{base: '2', md:'7'}} w='full' h='75vh' justifyContent='space-between' pb={{base:'2', md: '16',lg:'20'}} zIndex={1}>
+      <Box pos='absolute' top='0' h='75vh' w='full' zIndex={2} overflow='hidden' borderTopLeftRadius={{base:'xl', md:'0'}} style={bg} borderBottomRightRadius={{base:'xl', md:'0'}}>
+        {/* <img 
           width='100%' 
           style={{height: '100%', aspectRatio: '1/1'}} 
           alt="movie" 
           src={`https://image.tmdb.org/t/p/w500${currentMovie?.poster_path}`}
-        />
+        /> */}
       </Box>
+
+      <AnimatePresence initial={false} mode='wait'>
+        {
+          currentMovie?.name && 
+          <MotionBox 
+            key='hero' 
+            borderBottomLeftRadius='sm' 
+            borderRightRadius={{base: '', lg:'lg'}} 
+            initial={{rotate: '0deg'}} 
+            animate={{rotate: '30deg'}} 
+            transition={{duration: 0.08, type: 'spring', stiffness: 300, damping: 10}} 
+            exit={{rotate: '0deg', top:'-20px'}} 
+            pos='absolute' 
+            w={{base: 'auto', lg: '200px'}}
+            textAlign='center'
+            borderColor={primaryColor} 
+            zIndex={5} 
+            right={{base:'-10px', lg: '-10px'}} 
+            top={{base:'2.5', lg: '7'}} 
+            borderWidth='1px' 
+            fontWeight='black' 
+            fontSize={{base:'xs', lg:'sm'}} 
+            px='5'
+          >Series</MotionBox>
+        }
+      </AnimatePresence>
       <Searchbar />
 
       <Flex gap={{base: '7', md: '0'}} direction={{base:'column', md:'row'}} w={{base: 'full', md:'90%'}} alignSelf={{base:'center', md:'end'}} zIndex={5} justifyContent='space-between' p={{base: '2', md:'0'}} pr={{base:'', md:'7'}}>
         <Stack color='white' maxW={{base: 'full', md: '80%', lg:'1/3'}} gap='3'>
-          <Text fontSize={{base:'4xl',md:'5xl', lg:'48px'}} lineHeight={{base:'40px', md:'48px', lg:'53px'}} fontWeight='bolder'>{currentMovie?.original_title}</Text>
+          <Text fontSize={{base:'4xl',md:'5xl', lg:'48px'}} lineHeight={{base:'40px', md:'48px', lg:'53px'}} fontWeight='bolder'>{currentMovie?.original_title ? currentMovie?.original_title : currentMovie?.name }</Text>
 
           <Text lineClamp={4} fontSize={{base:'sm', md:'md', lg:'lg'}} fontWeight='medium'>
             {currentMovie?.overview}
           </Text>
 
-          <Button onClick={() => router.push(`/movies/${currentMovie?.id}`)} bg={primaryColor} maxW={{base: '169px', md: '130px' , lg:'169px'}} p='1.5' rounded='md' color='white'>
+          <Button onClick={() => router.push(`/${currentMovie?.original_title ? 'movies' : 'series'}/${currentMovie?.id}`)} bg={primaryColor} maxW={{base: '169px', md: '130px' , lg:'169px'}} p='1.5' rounded='md' color='white'>
             <HStack gap='2'>
               <Watch />
-              <Text>Watch Trailer</Text>
+              <Text>{currentMovie?.original_title ? 'Watch Trailer' : 'More Info'}</Text>
             </HStack>
           </Button>
         </Stack>

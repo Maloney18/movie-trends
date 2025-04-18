@@ -29,7 +29,7 @@ const Collection = ({title, data, isError, isLoading, error}: incoming) => {
   if ( isLoading ) {
     return (
       <Stack gap='7'>
-        <Text fontWeight='black' fontSize='2xl' color={gray900}> {title} </Text>
+        <Text fontWeight='black' fontSize='2xl' color={{base:gray900, _dark: gray400}}> {title} </Text>
         <Loader />
       </Stack>
     )
@@ -57,7 +57,7 @@ const Collection = ({title, data, isError, isLoading, error}: incoming) => {
           {
             data.results?.slice(0,12).map((movie: movie) => (
 
-              <MovieCard title={movie.title ? movie.title : movie.name} type={movie.title ? 'movie' : 'series'} key={movie.id} movieId={movie.id} imgSrc={ movie.poster_path} date={movie.release_date ? movie.release_date : movie.first_air_date}/>
+              <MovieCard title={movie.title ? movie.title : movie.name} type={movie.title ? 'movie' : 'series'} key={movie.id} movieId={movie.id} imgSrc={ movie.poster_path} date={movie.release_date ? movie.release_date : movie.first_air_date} tag={movie.title ? false : true}/>
             ))
           }
         </Flex>

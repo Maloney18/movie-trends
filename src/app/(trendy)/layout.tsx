@@ -33,7 +33,7 @@ const DefaultLayout = ({children}: {children: React.ReactNode}) => {
         
       {
         showButton && 
-        <Button backdropFilter='blur(5px)' onClick={scrollToTop} pos='fixed' p='2.5' bottom='4' right='4' bg={primaryLighter} color='white' rounded='full' shadow='lg'>
+        <Button backdropFilter='blur(5px)' onClick={scrollToTop} pos='fixed' p='2.5' bottom='4' right='4' bg={primaryLighter} color='white' rounded='full'>
           <FaArrowUp />
         </Button>
       }

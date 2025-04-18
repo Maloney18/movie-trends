@@ -1,11 +1,11 @@
 'use client'
 
-import { Box, Button, Container, Flex, HStack, Stack, Text } from '@chakra-ui/react'
+import { Box, Flex, HStack, Stack, Text } from '@chakra-ui/react'
 import { Play } from '@/icons/icons'
 import { use, useState } from 'react';
-import { FaArrowLeftLong, FaArrowUp, FaCircle } from 'react-icons/fa6';
+import { FaArrowLeftLong } from 'react-icons/fa6';
 import { useRouter } from 'next/navigation';
-import { movieCreditsQuery, movieDetailsQuery, movieRecommendationsQuery } from '@/hooks/useRQueries';
+import { creditsQuery, detailsQuery, recommendationsQuery } from '@/hooks/useRQueries';
 import { Colors } from '@/components/color';
 import MovieDetailsLoader from '@/components/movieDetailsLoader';
 import PlaceholderImg from '@/assets/plalceholderImg.png'
@@ -25,9 +25,9 @@ const MovieId = ({params}: params) => {
   const [loading, setLoading] = useState(false)
   const [youtubeVideo, setYoutubeVideo] = useState('')
   const { movieId } = use(params)
-  const {isLoading: detailsLoader, data: details, isError: detailsError, error: detailsErrMsg} = movieDetailsQuery(movieId)
-  const {isLoading: credIsLoading, data: credits, isError: credErrState, error: credErr} = movieCreditsQuery(movieId)
-  const {isLoading: recommendIsLoading, data: recommendations, isError: reccomErrorState, error: reccomErr} = movieRecommendationsQuery(movieId)
+  const {isLoading: detailsLoader, data: details, isError: detailsError, error: detailsErrMsg} = detailsQuery(movieId, 'movie')
+  const {isLoading: credIsLoading, data: credits, isError: credErrState, error: credErr} = creditsQuery(movieId, 'movie')
+  const {isLoading: recommendIsLoading, data: recommendations, isError: reccomErrorState, error: reccomErr} = recommendationsQuery(movieId, 'movie')
   const router = useRouter()
   const { title, rating, gray400, primaryLighter, primaryColor, gameBg, description, descriptionL } = Colors.light
 
@@ -92,14 +92,14 @@ const MovieId = ({params}: params) => {
   const hours = Math.floor(details.runtime / 60)
   const mins = details.runtime % 60
   const director = credits?.crew.find((member: { job: string }) => member.job === 'Director')
-  const storyWriters = credits?.crew.find((member: { job: string }) => member.job === 'Story')
+  const storyWriters = credits?.crew.find((member: { job: string }) => ['Story', 'Writer'].includes(member.job))
   const topActors = credits?.cast.filter((member: { known_for_department: string }) => member.known_for_department === 'Acting').slice(0,7)
 
   return (
     <Stack as='section' h='full' pt={{base:'', md: '5'}} pr={{base: '', md:'2'}} p={{base: '1.5', md: ''}} gap={{base: '10', md:'16'}}>
       <Stack gap='5'>
         <Stack>
-          <HStack cursor='pointer' gap='1' onClick={() => router.back()}>
+          <HStack w='max-content' color={{base: title, _dark: rating}} _hover={{color: primaryLighter}} cursor='pointer' gap='1' onClick={() => router.back()}>
             <FaArrowLeftLong />
             <Text fontSize={{base: '', md: 'sm'}} fontWeight='bold'>Back</Text>
           </HStack>
@@ -133,7 +133,7 @@ const MovieId = ({params}: params) => {
               }
             </Flex>
 
-            <HStack>
+            <HStack wrap='wrap'>
               {
                 details.genres.map((genre: {id: string, name: string}) => (
                   <Text key={genre.id} borderWidth='1px' borderColor={{base:gameBg, _dark:rating}} color={{base:primaryColor, _dark: primaryLighter}} px='2' fontWeight='medium' rounded='3xl' fontSize={{base: 'xs',md: 'sm', lg: 'md'}}>{genre.name}</Text>
