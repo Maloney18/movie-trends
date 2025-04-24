@@ -96,7 +96,7 @@ const DetailsPage = ({details, credits, recommendations}: incoming) => {
            {
               details.data.homepage && 
               <Stack pos='relative' onClick={() => handleNavigate()} cursor='pointer' justifyContent='center' alignItems='center' bg='#00000040' rounded='full' w={{base:'80px', md:'100px'}} h={{base:'80px', md:'100px'}} backdropFilter='blur(5px)'>
-                <LuExternalLink style={{fontSize: 30, position: 'absolute', left: '35%', bottom: '40%'}}/>
+                <LuExternalLink style={{fontSize: 30, position: 'absolute', left: '35%', bottom: '40%', color: 'white'}}/>
               </Stack>
             }
           </Stack>
