@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Flex, Grid, GridItem, HStack, Stack, Text } from '@chakra-ui/react'
+import { Box, Container, Flex, Grid, GridItem, HStack, Stack, Text } from '@chakra-ui/react'
 import { FaArrowLeftLong } from 'react-icons/fa6';
 import { LuExternalLink } from 'react-icons/lu';
 import { useRouter } from 'next/navigation';
@@ -15,6 +15,8 @@ type incoming = {
     isError: boolean,
     isLoading: boolean,
     data: any | {
+      id: number,
+      number_of_episodes: number,
       backdrop_path: string,
       runtime: number,
       homepage: string,
@@ -24,7 +26,8 @@ type incoming = {
       genres: [],
       tagline: string,
       production_companies: [],
-      name: string
+      name: string,
+      seasons: []
     },
     error: any
   },
@@ -73,13 +76,11 @@ const DetailsPage = ({details, credits, recommendations}: incoming) => {
     AspectRatio: '1/1'
   }
 
-  const hours = Math.floor(details.data.runtime / 60)
-  const mins = details.data.runtime % 60
   const writers : any = credits?.data?.crew.find((member: { job: string }) => member.job === 'Novel')
   const producers : any = credits?.data?.crew.filter((member: { job: string }) => ['Producer', 'Executive Producer', 'Associate Producer', 'Line Producer'].includes(member.job))
   const topActors : any = credits?.data?.cast.filter((member: { known_for_department: string }) => member.known_for_department === 'Acting').slice(0,7)
 
-  // console.log('details', details.data)
+  console.log('details', details.data)
   // console.log('credits', credits.data)
   // console.log(producers)
 
@@ -95,7 +96,7 @@ const DetailsPage = ({details, credits, recommendations}: incoming) => {
            {
               details.data.homepage && 
               <Stack pos='relative' onClick={() => handleNavigate()} cursor='pointer' justifyContent='center' alignItems='center' bg='#00000040' rounded='full' w={{base:'80px', md:'100px'}} h={{base:'80px', md:'100px'}} backdropFilter='blur(5px)'>
-                <LuExternalLink style={{fontSize: 25, position: 'absolute', bottom: '40%'}}/>
+                <LuExternalLink style={{fontSize: 30, position: 'absolute', left: '35%', bottom: '40%'}}/>
               </Stack>
             }
           </Stack>
@@ -105,16 +106,7 @@ const DetailsPage = ({details, credits, recommendations}: incoming) => {
           <Stack maxW={{base:'full', lg: '82%'}} flex='1' gap={{base: '2.5', md: ''}}>
             <Flex direction={{base: 'column', md: 'row'}} gap={{base: '', md:'2'}} color={{base: title, _dark: gray400}} alignItems={{base: '', md:'end'}}>
               <Text fontSize={{base: 'xl', lg: '2xl'}} fontWeight='black'>{details.data.title ? details.data.title: details.data.name}</Text>
-
-              {
-                details.data.release_date &&
-                <HStack>
-                  <Text alignSelf='center'>&#x2022;</Text>
-                  <Text fontSize={{base: '', lg: 'xl'}} fontWeight='bold'>{details.data.release_date}</Text>
-                  <Text alignSelf='center'>&#x2022;</Text>
-                  <Text color={primaryLighter} fontSize={{base: '', lg: 'xl'}} fontWeight='medium'>{`${hours}h ${mins}m`}</Text>
-                </HStack>
-              }
+              <Text color={primaryLighter} fontSize={{base: '', lg: 'xl'}} fontWeight='medium'>{details.data.number_of_episodes} Episodes</Text>
             </Flex>
 
             <HStack wrap='wrap'>
@@ -155,7 +147,7 @@ const DetailsPage = ({details, credits, recommendations}: incoming) => {
                     <Text fontWeight='bold' fontSize={{base: 'lg', md: 'xl'}}>{producers.length > 1 ? 'Producers' : 'Producer'}</Text>
                       {
                       producers.length > 1 ? 
-                      <Flex direction={{base: 'column', lg: 'row'}} gap={{base:'2', lg:'5'}}>
+                      <Flex wrap='wrap' direction={{base: 'column', lg: 'row'}} gap={{base:'2', lg:'5'}}>
                         {
                           producers.map((member: {id: string, name: string}) => ( 
                             <Text key={member.id} fontWeight='medium' fontSize={{base: '', lg: 'lg'}}>&#x2022; {member?.name}</Text>
@@ -179,7 +171,7 @@ const DetailsPage = ({details, credits, recommendations}: incoming) => {
                     topActors.map((actor: {id: string, name: string, character: string, profile_path: string | null}) => (
                     <Stack key={actor.id} w={{base: '120px', lg:'150px'}}>
                       <Box w={{base: '120px', lg:'150px'}} h={{base: '120px', lg:'150px'}} overflow='hidden' borderTopLeftRadius='xl' borderBottomEndRadius='xl'>
-                        <img src={actor.profile_path !== null ? `https://image.tmdb.org/t/p/w500${actor.profile_path}/` : PlaceholderImg.src} alt="" width='100%' height='100%' style={{aspectRatio: 1/1, objectFit: 'cover'}}/>
+                        <img src={actor.profile_path !== null ? `https://image.tmdb.org/t/p/w500${actor.profile_path}/` : PlaceholderImg.src} alt={actor.name} width='100%' height='100%' style={{aspectRatio: 1/1, objectFit: 'cover'}}/>
                       </Box>
 
                       <Stack gap='0' borderWidth='1px' p='1.5' pt={0} borderTopWidth={0} borderColor={primaryLighter} borderBottomLeftRadius='xl'>
@@ -197,7 +189,7 @@ const DetailsPage = ({details, credits, recommendations}: incoming) => {
             <Stack color={{base: title, _dark: gray400}}>
               <Text fontWeight='bold' fontSize={{base:'lg'}}>Production {details.data.production_companies.length > 1 ? 'Companies' : 'Company'}</Text>
 
-              <Stack color={{base: title, _dark: gray400}} gap='2'>
+              <Stack gap='2'>
                 {
                   details.data.production_companies.map((company : {logo_path:string | null, id:string, origin_country: string, name: string}) => (
                       <Grid templateColumns={{base:'40px auto', md: '35px auto'}} key={company.id} gap='2' alignItems='center'>
@@ -218,9 +210,25 @@ const DetailsPage = ({details, credits, recommendations}: incoming) => {
         </Flex>
       </Stack>
 
-      {
-
-      }
+      <Stack gap='3' maxW='full' color={{base: title, _dark: gray400}}>
+        <Text fontSize='xl' fontWeight='bold'>{details.data.seasons.length > 1 ? 'Seasons' : 'Season'}</Text>
+        {
+          details.data.seasons.length !== 0 && 
+          <HStack overflow='scroll'  className='removeScroll' gap='5'>
+            {details.data.seasons.map((season : {poster_path: string, name: string, season_number: number, id: number, episode_count: number}) => (
+              <Stack key={season.id} maxW='250px'>
+                <Box h='200px' w='200px' overflow='hidden' rounded='md'>
+                  <img src={`https://image.tmdb.org/t/p/w500${season.poster_path}`} alt={season.name} width='100%' height='100%' style={{aspectRatio: 1/1, objectFit: 'cover'}}/>
+                </Box>
+                <Stack gap='0'>
+                  <Text fontWeight='medium'>{season.name}</Text>
+                  <Text fontWeight='medium' fontSize='sm' color={primaryLighter}>{season.episode_count} Episodes</Text>
+                </Stack>
+              </Stack>
+            ))}
+          </HStack>
+        }
+      </Stack>
 
      { 
         recommendations?.data?.results.length !== 0 &&
