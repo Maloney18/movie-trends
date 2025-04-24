@@ -89,7 +89,7 @@ const Hero = () => {
             initial={{rotate: '0deg'}} 
             animate={{rotate: '30deg'}} 
             transition={{duration: 0.08, type: 'spring', stiffness: 300, damping: 10}} 
-            exit={{rotate: '0deg', top:'-20px'}} 
+            exit={{rotate: '0deg', top:'-10px'}} 
             pos='absolute' 
             w={{base: 'auto', lg: '120px'}}
             textAlign='center'
