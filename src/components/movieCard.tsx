@@ -33,7 +33,7 @@ const MovieCard = ({date, title, imgSrc, movieId, type, tag} : incoming) => {
               height: '100%', 
               aspectRatio: '1/1',
             }} 
-            alt="movie" 
+            alt={title} 
             src={imgSrc ? `https://image.tmdb.org/t/p/w500${imgSrc}` : PosterPlaceholder.src}
           />}
           {tag && <Text pos='absolute' top='1.5' right='1.5' bg={primaryLighter} px='2.5' rounded='xl' color={{base: 'white', _dark: gray400}} fontWeight='medium' fontSize={{base: 'xs', md: 'sm'}}> Series </Text>}
