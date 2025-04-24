@@ -101,6 +101,7 @@ const Hero = () => {
             fontWeight='black' 
             fontSize={{base:'xs', lg:'sm'}} 
             px='5'
+            color='white'
           >Series</MotionBox>
         }
       </AnimatePresence>
