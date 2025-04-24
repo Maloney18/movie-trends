@@ -6,15 +6,14 @@ import PosterPlaceholder from '@/assets/posterPlaceholder.png'
 type incoming = {
   date?: string,
   title?: string,
-  genre?: string,
   imgSrc?: string | null,
   movieId?: string,
   type?: string,
   tag?: boolean
 }
 
-const MovieCard = ({date, title, genre, imgSrc, movieId, type, tag} : incoming) => {
-  const {gray400, gray900, rating, primaryLighter} = Colors.light
+const MovieCard = ({date, title, imgSrc, movieId, type, tag} : incoming) => {
+  const {gray400, gray900, rating, primaryLighter, primaryColor} = Colors.light
   const year = date ? new Date(date).getFullYear() :  ''
   const router = useRouter()
 
@@ -25,7 +24,7 @@ const MovieCard = ({date, title, genre, imgSrc, movieId, type, tag} : incoming) 
 
   // console.log(imgSrc)
   return (
-    <Grid cursor='pointer' gridTemplateRows={{base:'250px auto', md: '200px auto', lg: '250px auto'}} gap={3} w={{base:'200px', md: '150px', lg: '200px'}} onClick={() => router.push(`/${type === 'movie' ? 'movies' : 'series'}/${movieId}`)}>
+    <Grid className='group' _hover={{cursor:'pointer'}} gridTemplateRows={{base:'250px auto', md: '200px auto', lg: '250px auto'}} gap={3} w={{base:'200px', md: '150px', lg: '200px'}} onClick={() => router.push(`/${type === 'movie' ? 'movies' : 'series'}/${movieId}`)}>
       <GridItem pos='relative' h={{base:'250px', md: '200px', lg: '250px'}} w={{base:'200px', md: '150px', lg: '200px'}} bg={imgSrc ? '' : 'grey'} overflow='hidden' borderTopLeftRadius='lg' borderBottomRightRadius='lg'>
           {(imgSrc && title) &&
             <img 
@@ -44,9 +43,8 @@ const MovieCard = ({date, title, genre, imgSrc, movieId, type, tag} : incoming) 
           (year || title) ?
           (
             <>
-              <Text color={gray400} fontWeight='bold' fontSize='xs'>{year}</Text>
-              <Text color={{base:gray900, _dark: rating}} fontSize={{base:'md', lg:'lg'}} fontWeight='bold' wordWrap='break-word'>{title}</Text>
-              <Text fontSize='xs' color={gray400} fontWeight='bold'>{genre}</Text>
+              <Text color={gray400} transition='all 0.3s ease-in'  _groupHover={{color: primaryLighter}} fontWeight='bold' fontSize='xs'>{year}</Text>
+              <Text color={{base:gray900, _dark: rating}} transition='all 0.5s ease-in'  _groupHover={{color: primaryColor}} fontSize={{base:'md', lg:'lg'}} fontWeight='bold' wordWrap='break-word'>{title}</Text>
             </>
           ) 
           :

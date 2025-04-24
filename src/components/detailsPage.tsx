@@ -88,7 +88,7 @@ const DetailsPage = ({details, credits, recommendations}: incoming) => {
     <Stack as='section' h='full' pt={{base:'', md: '5'}} pr={{base: '', md:'2'}} p={{base: '1.5', md: ''}} gap={{base: '10', md:'16'}}>
       <Stack gap='5'>
         <Stack>
-          <HStack color={{base: title, _dark: rating}} _hover={{color: primaryLighter}} cursor='pointer' gap='1' onClick={() => router.back()}>
+          <HStack color={{base: title, _dark: rating}}  _hover={{color: primaryLighter, scale: .9}} transition='all 0.5s ease-in' cursor='pointer' gap='1' onClick={() => router.back()} w='max-content'>
             <FaArrowLeftLong />
             <Text fontSize={{base: '', md: 'sm'}} fontWeight='bold'>Back</Text>
           </HStack>

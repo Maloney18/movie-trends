@@ -91,12 +91,12 @@ const Hero = () => {
             transition={{duration: 0.08, type: 'spring', stiffness: 300, damping: 10}} 
             exit={{rotate: '0deg', top:'-20px'}} 
             pos='absolute' 
-            w={{base: 'auto', lg: '200px'}}
+            w={{base: 'auto', lg: '120px'}}
             textAlign='center'
             borderColor={primaryColor} 
             zIndex={5} 
             right={{base:'-10px', lg: '-10px'}} 
-            top={{base:'2.5', lg: '7'}} 
+            top='2.5' 
             borderWidth='1px' 
             fontWeight='black' 
             fontSize={{base:'xs', lg:'sm'}} 

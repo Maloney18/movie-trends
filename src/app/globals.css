@@ -19,3 +19,7 @@ __bg {
 .removeScroll::-webkit-scrollbar {
   display: none;
 }
+
+.cardContainer:hover > p {
+  color: '#BE123C';
+}
