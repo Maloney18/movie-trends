@@ -104,7 +104,7 @@ const DetailsPage = ({details, credits, recommendations}: incoming) => {
 
         <Flex direction={{base: 'column', lg: 'row'}} gap={{base: '10', md: ''}} pl='2' alignItems={{base: '', md:'start'}}>
           <Stack maxW={{base:'full', lg: '82%'}} flex='1' gap={{base: '2.5', md: ''}}>
-            <Flex direction={{base: 'column', md: 'row'}} gap={{base: '', md:'2'}} color={{base: title, _dark: gray400}} alignItems={{base: '', md:'end'}}>
+            <Flex direction={{base: 'column', md: 'row'}} gap={{base: '', md:'2', lg: '5'}} color={{base: title, _dark: gray400}} alignItems={{base: '', md:'baseline'}}>
               <Text fontSize={{base: 'xl', lg: '2xl'}} fontWeight='black'>{details.data.title ? details.data.title: details.data.name}</Text>
               <Text color={primaryLighter} fontSize={{base: '', lg: 'xl'}} fontWeight='medium'>{details.data.number_of_episodes} Episodes</Text>
             </Flex>
