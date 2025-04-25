@@ -145,5 +145,6 @@ export const creditsQuery = (id: string, endpoint: string) => useQuery({queryKey
 
 export const recommendationsQuery = (id: string, endpoint: string) => useQuery({queryKey: ['recommendations', id, endpoint], queryFn: ({queryKey}) => getDetails(queryKey[1], queryKey[2], 'recommendations')})
 
-export const searchQuery = (search: string, endpoint: string) => useQuery({queryKey: ['recommendations', search, endpoint], queryFn: ({queryKey}) => searchEndpoint(queryKey[1], queryKey[2])})
+export const searchQuery = (search: string, endpoint: string) => useQuery({queryKey: ['search', search, endpoint], queryFn: ({queryKey}) => searchEndpoint(queryKey[1], queryKey[2])})
+
 export const youtubeVideoQuery = (query: string) => useQuery({queryKey: ['youtubeVideo', query], queryFn: ({queryKey}) => getYoutubeVideo(queryKey[1])})

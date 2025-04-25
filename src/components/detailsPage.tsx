@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Container, Flex, Grid, GridItem, HStack, Stack, Text } from '@chakra-ui/react'
+import { Box, Button, Container, Flex, Grid, GridItem, HStack, Stack, Text } from '@chakra-ui/react'
 import { FaArrowLeftLong } from 'react-icons/fa6';
 import { LuExternalLink } from 'react-icons/lu';
 import { useRouter } from 'next/navigation';
@@ -63,6 +63,29 @@ const DetailsPage = ({details, credits, recommendations}: incoming) => {
     }
   }
 
+  const getDetails = async (seasonNo?: number) => {
+    try {
+      const response = await fetch( `https://api.themoviedb.org/3/tv/${details.data.id}${seasonNo ? '/season/'+seasonNo+'?language=en-US' : '?language=en-US'}`,
+        {
+          method: 'GET',
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
+          }
+        }
+      )
+      
+      if (!response.ok) {
+        throw new Error(`An error occured while fetching season details`)
+      }
+  
+      const data = await response.json()
+      console.log(data) 
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   if (details.isLoading) {
     return <MovieDetailsLoader />
   }
@@ -88,10 +111,10 @@ const DetailsPage = ({details, credits, recommendations}: incoming) => {
     <Stack as='section' h='full' pt={{base:'', md: '5'}} pr={{base: '', md:'2'}} p={{base: '1.5', md: ''}} gap={{base: '10', md:'16'}}>
       <Stack gap='5'>
         <Stack>
-          <HStack color={{base: title, _dark: rating}}  _hover={{color: primaryLighter, scale: .9}} transition='all 0.5s ease-in' cursor='pointer' gap='1' onClick={() => router.back()} w='max-content'>
+          <Button bg='none' display='flex' color={{base: title, _dark: rating}}  _hover={{color: primaryLighter, scale: .9}} transition='all 0.5s ease-in' cursor='pointer' gap='1' onClick={() => router.back()} w='max-content'>
             <FaArrowLeftLong />
             <Text fontSize={{base: '', md: 'sm'}} fontWeight='bold'>Back</Text>
-          </HStack>
+          </Button>
           <Stack style={bg} alignItems='center' justifyContent='center' h={{base: '60vh'}} bg='grey' rounded='xl' overflow='hidden'>
            {
               details.data.homepage && 
@@ -216,7 +239,7 @@ const DetailsPage = ({details, credits, recommendations}: incoming) => {
           details.data.seasons.length !== 0 && 
           <HStack overflow='scroll'  className='removeScroll' gap='5'>
             {details.data.seasons.map((season : {poster_path: string, name: string, season_number: number, id: number, episode_count: number}) => (
-              <Stack key={season.id} maxW='250px'>
+              <Stack key={season.id} maxW='250px' onClick={() => getDetails(season.season_number)}>
                 <Box h='200px' w='200px' overflow='hidden' rounded='md'>
                   <img src={`https://image.tmdb.org/t/p/w500${season.poster_path}`} alt={season.name} width='100%' height='100%' style={{aspectRatio: 1/1, objectFit: 'cover'}}/>
                 </Box>

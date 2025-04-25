@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Flex, HStack, Stack, Text } from '@chakra-ui/react'
+import { Box, Button, Flex, HStack, Stack, Text } from '@chakra-ui/react'
 import { Play } from '@/icons/icons'
 import { use, useState } from 'react';
 import { FaArrowLeftLong } from 'react-icons/fa6';
@@ -99,10 +99,10 @@ const MovieId = ({params}: params) => {
     <Stack as='section' h='full' pt={{base:'', md: '5'}} pr={{base: '', md:'2'}} p={{base: '1.5', md: ''}} gap={{base: '10', md:'16'}}>
       <Stack gap='5'>
         <Stack>
-          <HStack w='max-content' color={{base: title, _dark: rating}} _hover={{color: primaryLighter, scale: .9}} transition='all 0.5s ease-in' cursor='pointer' gap='1' onClick={() => router.back()}>
+          <Button display='flex' bg='none' w='max-content' color={{base: title, _dark: rating}} _hover={{color: primaryLighter, scale: .9}} transition='all 0.5s ease-in' cursor='pointer' gap='1' onClick={() => router.back()}>
             <FaArrowLeftLong />
             <Text fontSize={{base: '', md: 'sm'}} fontWeight='bold'>Back</Text>
-          </HStack>
+          </Button>
           <Stack pos='relative' style={bg} alignItems='center' justifyContent='center' h={{base: '60vh'}} bg='grey' rounded='xl' overflow='hidden'>
             {
               clicked ?
