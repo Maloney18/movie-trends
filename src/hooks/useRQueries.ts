@@ -67,9 +67,9 @@ const getEndpoint = async (endpoint: string) => {
   }
 }
 
-const getDetails = async (id: string, endpoint: string, extra?: string, seasonNo?: string) => {
+const getDetails = async (id: string, endpoint: string, extra?: string) => {
   try {
-    const response = await fetch( `https://api.themoviedb.org/3/${endpoint}/${id}${extra && '/'+extra}${seasonNo ? '/season/'+seasonNo+'?language=en-US' : '?language=en-US'}`,
+    const response = await fetch( `https://api.themoviedb.org/3/${endpoint}/${id}${extra && '/'+extra}?language=en-US`,
       {
         method: 'GET',
         headers: {
@@ -88,7 +88,6 @@ const getDetails = async (id: string, endpoint: string, extra?: string, seasonNo
     console.log(error)
   }
 }
-
 
 const searchEndpoint = async (search: string, endpoint: string) => {
   try {

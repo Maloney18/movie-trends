@@ -3,6 +3,7 @@ import { Provider } from "@/components/ui/provider";
 import "./globals.css";
 import localFont from "next/font/local";
 import QueryProvider from "./queryProvider";
+import SeasonProvider from "@/hooks/useMyContext";
 
 const satoshi = localFont({
   src: [
@@ -45,7 +46,9 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
       <body className={satoshi.className}>
         <QueryProvider >
           <Provider>
-            {children} 
+            <SeasonProvider>
+              {children} 
+            </SeasonProvider>
           </Provider>
         </QueryProvider>
       </body>

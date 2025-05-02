@@ -2,6 +2,7 @@ import { Box, Text, Grid, GridItem } from '@chakra-ui/react'
 import { Colors } from './color'
 import { useRouter } from 'next/navigation' 
 import PosterPlaceholder from '@/assets/posterPlaceholder.png'
+import { Ref } from 'react'
 
 type incoming = {
   date?: string,
@@ -9,10 +10,12 @@ type incoming = {
   imgSrc?: string | null,
   movieId?: string,
   type?: string,
-  tag?: boolean
+  tag?: boolean,
+  innerRef?: Ref<HTMLDivElement>,
+  clicked?: () => void
 }
 
-const MovieCard = ({date, title, imgSrc, movieId, type, tag} : incoming) => {
+const MovieCard = ({date, title, imgSrc, movieId, type, tag, innerRef, clicked} : incoming) => {
   const {gray400, gray900, rating, primaryLighter, primaryColor} = Colors.light
   const year = date ? new Date(date).getFullYear() :  ''
   const router = useRouter()
@@ -22,9 +25,19 @@ const MovieCard = ({date, title, imgSrc, movieId, type, tag} : incoming) => {
     borderRadius: '50%'
   }
 
-  // console.log(imgSrc)
   return (
-    <Grid className='group' _hover={{cursor:'pointer'}} gridTemplateRows={{base:'250px auto', md: '200px auto', lg: '250px auto'}} gap={3} w={{base:'200px', md: '150px', lg: '200px'}} onClick={() => router.push(`/${type === 'movie' ? 'movies' : 'series'}/${movieId}`)}>
+    <Grid 
+      ref={innerRef} 
+      className='group' 
+      _hover={{cursor:'pointer'}} 
+      gridTemplateRows={{base:'250px auto', md: '200px auto', lg: '250px auto'}} 
+      gap={3} 
+      w={{base:'200px', md: '150px', lg: '200px'}} 
+      onClick={() => {
+        router.push(`/${type === 'movie' ? 'movies' : 'series'}/${movieId}`)
+        clicked && clicked()
+      }}
+    >
       <GridItem pos='relative' h={{base:'250px', md: '200px', lg: '250px'}} w={{base:'200px', md: '150px', lg: '200px'}} bg={imgSrc ? '' : 'grey'} overflow='hidden' borderTopLeftRadius='lg' borderBottomRightRadius='lg'>
           {(imgSrc && title) &&
             <img 
@@ -34,6 +47,7 @@ const MovieCard = ({date, title, imgSrc, movieId, type, tag} : incoming) => {
               aspectRatio: '1/1',
             }} 
             alt={title} 
+            loading='lazy'
             src={imgSrc ? `https://image.tmdb.org/t/p/w500${imgSrc}` : PosterPlaceholder.src}
           />}
           {tag && <Text pos='absolute' top='1.5' right='1.5' bg={primaryLighter} px='2.5' rounded='xl' color={{base: 'white', _dark: gray400}} fontWeight='medium' fontSize={{base: 'xs', md: 'sm'}}> Series </Text>}

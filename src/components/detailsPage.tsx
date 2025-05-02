@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Button, Container, Flex, Grid, GridItem, HStack, Stack, Text } from '@chakra-ui/react'
+import { Box, Button, Flex, Grid, GridItem, HStack, Stack, Text } from '@chakra-ui/react'
 import { FaArrowLeftLong } from 'react-icons/fa6';
 import { LuExternalLink } from 'react-icons/lu';
 import { useRouter } from 'next/navigation';
@@ -9,6 +9,8 @@ import MovieDetailsLoader from '@/components/movieDetailsLoader';
 import PlaceholderImg from '@/assets/plalceholderImg.png'
 import ProductionCompany from '@/assets/A_minimalistic_placeholder_logo_for_a_movie_produc.png'
 import Collection from '@/components/collection';
+import { useMyContext } from '@/hooks/useMyContext';
+import SeasonDetails from './seasonDetails';
 
 type incoming = {
   details: {
@@ -53,36 +55,20 @@ type incoming = {
 
 const DetailsPage = ({details, credits, recommendations}: incoming) => {
   const router = useRouter()
+  const { setSeasonInfo, setShowSeasonDetails, seasonInfo, showSeasonDetails} = useMyContext()
   const { title, rating, gray400, primaryLighter, primaryColor, gameBg, description } = Colors.light
+
+
+  const handleSeasonDetails = (seasonNumber: number) => {
+    setSeasonInfo(prevState => ({seriesId: details.data.id, seasonNumber}))
+    setShowSeasonDetails(true)
+  }
 
   const handleNavigate = () => {
     const {homepage} = details.data
     if (homepage) {
       window.open(homepage)
       return
-    }
-  }
-
-  const getDetails = async (seasonNo?: number) => {
-    try {
-      const response = await fetch( `https://api.themoviedb.org/3/tv/${details.data.id}${seasonNo ? '/season/'+seasonNo+'?language=en-US' : '?language=en-US'}`,
-        {
-          method: 'GET',
-          headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
-          }
-        }
-      )
-      
-      if (!response.ok) {
-        throw new Error(`An error occured while fetching season details`)
-      }
-  
-      const data = await response.json()
-      console.log(data) 
-    } catch (error) {
-      console.log(error)
     }
   }
 
@@ -108,7 +94,7 @@ const DetailsPage = ({details, credits, recommendations}: incoming) => {
   // console.log(producers)
 
   return (
-    <Stack as='section' h='full' pt={{base:'', md: '5'}} pr={{base: '', md:'2'}} p={{base: '1.5', md: ''}} gap={{base: '10', md:'16'}}>
+    <Stack as='section' pos='relative' h='full' overflow='visible' pt={{base:'', md: '5'}} pr={{base: '', md:'2'}} p={{base: '1.5', md: ''}} gap={{base: '10', md:'16'}}>
       <Stack gap='5'>
         <Stack>
           <Button bg='none' display='flex' color={{base: title, _dark: rating}}  _hover={{color: primaryLighter, scale: .9}} transition='all 0.5s ease-in' cursor='pointer' gap='1' onClick={() => router.back()} w='max-content'>
@@ -152,7 +138,7 @@ const DetailsPage = ({details, credits, recommendations}: incoming) => {
                   <Text fontWeight='bold' fontSize={{base: 'lg', lg: 'xl'}}>{writers.length > 1 ? 'Writers' : 'Writer'}</Text>
                   {
                     writers.length > 1 ?
-                    <Flex direction={{base: 'column', lg: 'row'}} gap={{base:'2', lg:'5'}}>
+                    <Flex wrap='wrap' direction={{base: 'column', lg: 'row'}} gap={{base:'2', lg:'5'}}>
                     {
                       writers.map((member: {id: string, name: string}) => ( 
                         <Text fontWeight='medium' fontSize={{base: '',md: 'sm', lg: 'lg'}}>&#x2022; {writers?.name}</Text>
@@ -160,7 +146,7 @@ const DetailsPage = ({details, credits, recommendations}: incoming) => {
                     }
                   </Flex>
                   :
-                    <Text fontWeight='medium' fontSize={{base: '',md: 'sm', lg: 'lg'}}>&#x2022; {writers?.name}</Text>
+                    <Text w='max-content' fontWeight='medium' fontSize={{base: '',md: 'sm', lg: 'lg'}}>&#x2022; {writers?.name}</Text>
                   }
                 </Stack>
               }
@@ -178,7 +164,7 @@ const DetailsPage = ({details, credits, recommendations}: incoming) => {
                         }
                       </Flex>
                       :
-                      <Text fontWeight='medium' fontSize={{base: '', lg: 'lg'}}>&#x2022; {producers.original_name}</Text>
+                      <Text w='max-content' fontWeight='medium' fontSize={{base: '', lg: 'lg'}}>&#x2022; {producers.original_name}</Text>
                     }
                   </Stack>
                 }
@@ -189,7 +175,7 @@ const DetailsPage = ({details, credits, recommendations}: incoming) => {
               <Stack pt='5' gap='2' color={{base: title, _dark: gray400}}>
                 <Text fontSize={{base:'xl'}} fontWeight='bold'>Top Casts</Text>
 
-                <HStack pr='2' overflowX='scroll' className='removeScroll' gap='5' alignItems='start' pb={{base:'', md:recommendations?.data?.results.length === 0 ? '5' : ''}}>
+                <HStack pr='2' overflowX='scroll' className='removeScroll' gap='5' alignItems='start' pb={{base:'', md:details.data.production_companies.length === 0 ? '5' : ''}}>
                   {
                     topActors.map((actor: {id: string, name: string, character: string, profile_path: string | null}) => (
                     <Stack key={actor.id} w={{base: '120px', lg:'150px'}}>
@@ -208,7 +194,7 @@ const DetailsPage = ({details, credits, recommendations}: incoming) => {
               </Stack>
             }
           </Stack>
-          <Stack pb={{base:recommendations?.data?.results.length === 0 ? '5' : '', md: ''}}>
+          <Stack pb={{base:details.data.seasons.length === 0 ? '5' : '', md: ''}}>
             <Stack color={{base: title, _dark: gray400}}>
               <Text fontWeight='bold' fontSize={{base:'lg'}}>Production {details.data.production_companies.length > 1 ? 'Companies' : 'Company'}</Text>
 
@@ -233,19 +219,19 @@ const DetailsPage = ({details, credits, recommendations}: incoming) => {
         </Flex>
       </Stack>
 
-      <Stack gap='3' maxW='full' color={{base: title, _dark: gray400}}>
+      <Stack gap='3' maxW='full' color={{base: title, _dark: gray400}} pb={recommendations?.data?.results.length === 0 ? '5' : ''}>
         <Text fontSize='xl' fontWeight='bold'>{details.data.seasons.length > 1 ? 'Seasons' : 'Season'}</Text>
         {
           details.data.seasons.length !== 0 && 
-          <HStack overflow='scroll'  className='removeScroll' gap='5'>
+          <HStack overflow='scroll'  className='removeScroll' gap='5' alignItems='baseline'>
             {details.data.seasons.map((season : {poster_path: string, name: string, season_number: number, id: number, episode_count: number}) => (
-              <Stack key={season.id} maxW='250px' onClick={() => getDetails(season.season_number)}>
+              <Stack _hover={{alignSelf: 'center'}} className='group' cursor='pointer' key={season.id} maxW='250px' onClick={() => handleSeasonDetails(season.season_number)}>
                 <Box h='200px' w='200px' overflow='hidden' rounded='md'>
                   <img src={`https://image.tmdb.org/t/p/w500${season.poster_path}`} alt={season.name} width='100%' height='100%' style={{aspectRatio: 1/1, objectFit: 'cover'}}/>
                 </Box>
                 <Stack gap='0'>
                   <Text fontWeight='medium'>{season.name}</Text>
-                  <Text fontWeight='medium' fontSize='sm' color={primaryLighter}>{season.episode_count} Episodes</Text>
+                  <Text _groupHover={{color: gray400}} transition='all 0.5s ease-in' fontWeight='medium' fontSize='sm' color={primaryLighter}>{season.episode_count} {season.episode_count === 1 ? 'Episode' : 'Episodes'}</Text>
                 </Stack>
               </Stack>
             ))}
@@ -267,6 +253,11 @@ const DetailsPage = ({details, credits, recommendations}: incoming) => {
           <Collection isError={recommendations.isError} data={recommendations.data} isLoading={recommendations.isLoading} error={recommendations.error} />
         </Stack>
       }
+
+      {/* {
+        showSeasonDetails &&
+        <SeasonDetails seasonInfo={seasonInfo} setShowDetails={setShowSeasonDetails}/>
+      } */}
     </Stack>
   )
 }

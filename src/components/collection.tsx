@@ -1,8 +1,11 @@
+'use client'
+
 import { Colors } from "./color"
 import Loader from "@/components/loader"
 import MovieCard from "@/components/movieCard"
 import { SeeMore } from "@/icons/icons"
 import { Stack, HStack, Text, Flex } from "@chakra-ui/react"
+import { useRouter } from "next/navigation"
 
 type movie = {
   title: string,
@@ -20,11 +23,13 @@ type incoming = {
   },
   isError: boolean,
   isLoading: boolean,
-  error: Error | null
+  error: Error | null,
+  url?: string
 }
 
-const Collection = ({title, data, isError, isLoading, error}: incoming) => {
+const Collection = ({title, data, isError, isLoading, error, url}: incoming) => {
   const { gray900, primaryColor, gray400 } = Colors.light 
+  const router = useRouter()
 
   if ( isLoading ) {
     return (
@@ -39,15 +44,15 @@ const Collection = ({title, data, isError, isLoading, error}: incoming) => {
     throw new Error(error?.message)
   }
 
-  // console.log(data.results)
+  // console.log(url)
   return (
     <Stack gap='7' maxW='full'>
       {
         title &&
         <HStack justifyContent='space-between' px={{base: '2'}}>
           <Text fontWeight='black' fontSize={{base:'xl', lg:'2xl'}} color={{base:gray900, _dark:gray400}}> {title} </Text>
-          <HStack gap='1'>
-            <Text fontSize={{base:'xs', lg:'md'}} cursor='pointer' color={primaryColor}>See more</Text>
+          <HStack className="group" cursor='pointer' gap='1' onClick={() => router.push(url || '')}>
+            <Text _groupHover={{fontWeight: 'bold'}} transition='all 0.08s ease-in' fontSize={{base:'xs', lg:'md'}} color={primaryColor}>See more</Text>
             <SeeMore />
           </HStack>
         </HStack>
@@ -59,6 +64,7 @@ const Collection = ({title, data, isError, isLoading, error}: incoming) => {
 
               <MovieCard title={movie.title ? movie.title : movie.name} type={movie.title ? 'movie' : 'series'} key={movie.id} movieId={movie.id} imgSrc={ movie.poster_path} date={movie.release_date ? movie.release_date : movie.first_air_date} tag={movie.title ? false : true}/>
             ))
+            
           }
         </Flex>
       </Stack>

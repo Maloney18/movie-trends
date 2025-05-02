@@ -2,6 +2,8 @@
 
 import { Colors } from '@/components/color'
 import Navbar from '@/components/navbar'
+import SeasonDetails from '@/components/seasonDetails'
+import { useMyContext } from '@/hooks/useMyContext'
 import { Button, Grid, GridItem } from '@chakra-ui/react'
 import { useRef, useState } from 'react'
 import { FaArrowUp } from 'react-icons/fa6'
@@ -10,6 +12,7 @@ const DefaultLayout = ({children}: {children: React.ReactNode}) => {
   const [showButton, setShowButton] = useState(false)
   const page = useRef<HTMLDivElement | null>(null);
   const {primaryLighter} = Colors.light
+  const { setShowSeasonDetails, seasonInfo, showSeasonDetails} = useMyContext()
 
   const handleScroll = () => {
     if (page.current && page.current.scrollTop > 300) {
@@ -28,15 +31,20 @@ const DefaultLayout = ({children}: {children: React.ReactNode}) => {
       <GridItem colSpan={{base:6, md:1}} h='full'>
         <Navbar />
       </GridItem>
-      <GridItem ref={page} onScroll={() => handleScroll()}  colSpan={{base: 6, md:5}} h='full' className="scroll" pos='relative'>
+      <GridItem ref={page} onScroll={() => handleScroll()}  colSpan={{base: 6, md:5}} h='100vh' overflowY='scroll' className="removeScroll" pos='relative'>
         {children}
         
-      {
-        showButton && 
-        <Button backdropFilter='blur(5px)' onClick={scrollToTop} pos='fixed' p='2.5' bottom='4' right='4' bg={primaryLighter} color='white' rounded='full'>
-          <FaArrowUp />
-        </Button>
-      }
+        {/* {
+          showSeasonDetails &&
+          <SeasonDetails seasonInfo={seasonInfo} setShowDetails={setShowSeasonDetails}/>
+        } */}
+
+        {
+          showButton && 
+          <Button backdropFilter='blur(5px)' onClick={scrollToTop} pos='fixed' p='2.5' bottom='4' right='4' bg={primaryLighter} color='white' rounded='full'>
+            <FaArrowUp />
+          </Button>
+        }
       </GridItem>
     </Grid>
   )
