@@ -98,7 +98,7 @@ const MoviesPage = () => {
   }
 
   const movies = data?.pages?.map((page) => page.results.map((movie: movie, idx : number) => {
-    if (page.results.length -1 === idx) {
+    if (page.results.length - 6 === idx) {
       return <MovieCard clicked={handleHeight} innerRef={ref} title={movie.title ? movie.title : movie.name} type={movie.title ? 'movie' : 'series'} key={movie.id} movieId={movie.id} imgSrc={ movie.poster_path} date={movie.release_date ? movie.release_date : movie.first_air_date} tag={movie.title ? false : true}/>
     }
     else {
@@ -106,7 +106,7 @@ const MoviesPage = () => {
     }
   }))
 
-  console.log(moviesPageScrollHeight)
+  // console.log(moviesPageScrollHeight)
   // console.log('child element', ref.current)
   // console.log('parent element', page.current?.offsetParent?.scrollTop)
   // console.log('parent element', page.current?.offsetParent?.moviePageScrollHeight)
@@ -130,7 +130,7 @@ const MoviesPage = () => {
       {
         hasNextPage && 
         <Stack alignSelf='center' justifyContent='center' alignItems='center' w='max-content' h='max-content' rounded='full'>
-          <LoadingSpinner />
+          <LoadingSpinner color="black"/>
         </Stack>
       }
     </Stack>

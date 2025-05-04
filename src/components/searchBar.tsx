@@ -10,9 +10,10 @@ const Searchbar = () => {
         outline='none'
         bg='transparent'
         border='none'
+        color='white'
       />
 
-      <Box pos='absolute' top='2' right='3'>
+      <Box pos='absolute' top={{base: '1.5' , md:'2'}} right='3' cursor='pointer' className="group">
         <Search />
       </Box>    
     </Box>

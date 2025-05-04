@@ -57,8 +57,8 @@ const MovieCard = ({date, title, imgSrc, movieId, type, tag, innerRef, clicked} 
           (year || title) ?
           (
             <>
-              <Text color={gray400} transition='all 0.3s ease-in'  _groupHover={{color: primaryLighter}} fontWeight='bold' fontSize='xs'>{year}</Text>
-              <Text color={{base:gray900, _dark: rating}} transition='all 0.5s ease-in'  _groupHover={{color: primaryColor}} fontSize={{base:'md', lg:'lg'}} fontWeight='bold' wordWrap='break-word'>{title}</Text>
+              <Text color={gray400} transition='all 0.3s ease-in'  _groupHover={{color: primaryLighter}}  _groupActive={{color: primaryLighter}} fontWeight='bold' fontSize='xs'>{year}</Text>
+              <Text color={{base:gray900, _dark: rating}} transition='all 0.5s ease-in'  _groupHover={{color: primaryColor}}  _groupActive={{color: primaryColor}} fontSize={{base:'md', lg:'lg'}} fontWeight='bold' wordWrap='break-word'>{title}</Text>
             </>
           ) 
           :

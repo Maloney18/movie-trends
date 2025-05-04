@@ -83,7 +83,7 @@ const SeriesPage = () => {
   if (status === 'pending') {
     return (
       <Stack gap='7'>
-        <Text fontWeight='black' fontSize='4xl' textAlign='center' color={{base:gray900, _dark: gray400}}> Movies </Text>
+        <Text fontWeight='black' fontSize={{base:'2xl', lg:'4xl'}} textAlign='center' color={{base:gray900, _dark: gray400}}> Series </Text>
         <Loader />
       </Stack>
     )
@@ -98,7 +98,7 @@ const SeriesPage = () => {
   }
 
   const series = data?.pages?.map((page) => page.results.map((movie: movie, idx : number) => {
-    if (page.results.length -1 === idx) {
+    if (page.results.length - 6 === idx) {
       return <MovieCard clicked={handleHeight} innerRef={ref} title={movie.title ? movie.title : movie.name} type={movie.title ? 'movie' : 'series'} key={movie.id} movieId={movie.id} imgSrc={ movie.poster_path} date={movie.release_date ? movie.release_date : movie.first_air_date} tag={movie.title ? false : true}/>
     }
     else {
@@ -106,7 +106,7 @@ const SeriesPage = () => {
     }
   }))
 
-  console.log(seriesPageScrollHeight)
+  
   // console.log('child element', ref.current)
   // console.log('parent element', page.current?.offsetParent?.scrollTop)
   // console.log('parent element', page.current?.offsetParent?.moviePageScrollHeight)

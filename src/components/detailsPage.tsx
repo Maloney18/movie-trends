@@ -89,7 +89,7 @@ const DetailsPage = ({details, credits, recommendations}: incoming) => {
   const producers : any = credits?.data?.crew.filter((member: { job: string }) => ['Producer', 'Executive Producer', 'Associate Producer', 'Line Producer'].includes(member.job))
   const topActors : any = credits?.data?.cast.filter((member: { known_for_department: string }) => member.known_for_department === 'Acting').slice(0,7)
 
-  console.log('details', details.data)
+  // console.log('details', details.data)
   // console.log('credits', credits.data)
   // console.log(producers)
 
@@ -115,7 +115,7 @@ const DetailsPage = ({details, credits, recommendations}: incoming) => {
           <Stack maxW={{base:'full', lg: '82%'}} flex='1' gap={{base: '2.5', md: ''}}>
             <Flex direction={{base: 'column', md: 'row'}} gap={{base: '', md:'2', lg: '5'}} color={{base: title, _dark: gray400}} alignItems={{base: '', md:'baseline'}}>
               <Text fontSize={{base: 'xl', lg: '2xl'}} fontWeight='black'>{details.data.title ? details.data.title: details.data.name}</Text>
-              <Text color={primaryLighter} fontSize={{base: '', lg: 'xl'}} fontWeight='medium'>{details.data.number_of_episodes} Episodes</Text>
+              <Text color={primaryLighter} fontSize={{base: '', lg: 'xl'}} fontWeight='medium'>{details.data.number_of_episodes} Episodes</Text>   
             </Flex>
 
             <HStack wrap='wrap'>

@@ -211,7 +211,7 @@ const MovieId = ({params}: params) => {
                         </Box>
 
                         <Stack gap='0'>
-                          <Text fontSize='sm' fontWeight='bold'>{company.name}</Text>
+                          <Text fontSize='sm' fontWeight='bold' lineClamp='1'>{company.name}</Text>
                           <Text fontSize='xs' fontWeight='medium'>{company.origin_country}</Text>
                         </Stack>
                       </HStack>
