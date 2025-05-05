@@ -2,14 +2,15 @@
 
 import { useMyContext } from "@/hooks/useMyContext"
 import { searchEndpoint } from "@/hooks/useRQueries"
-import { Search } from "@/icons/icons"
 import { Box, Input } from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
-import React from "react"
+import { FaSearch } from "react-icons/fa"
+import { Colors } from "./color"
 
 const Searchbar = ({ color } : {color?: string}) => {
   const { search, setSearch, setSearchResult, setIsLoading } = useMyContext()
   const router = useRouter()
+  const {gray400} = Colors.light
 
   const handleSubmit = async() => {
     setIsLoading(true)
@@ -40,9 +41,10 @@ const Searchbar = ({ color } : {color?: string}) => {
   }
 
   return (
-    <Box zIndex={5} pos='relative' alignSelf='center' w={{base: '80%', md:'70%', lg:'525px'}} borderWidth='1px' borderColor={{base:color || 'white', _dark: 'white'}} pl='2' pr='10' rounded='lg'>
+    <Box zIndex={5} pos='relative' alignSelf='center' w={{base: '80%', md:'70%', lg:'525px'}} borderWidth='1px' borderColor={{base: color || 'white', _dark: 'white'}} pl='2' pr='10' rounded='lg'>
       <Input 
         placeholder="Let your curiosity lead"
+        _placeholder={{color: gray400}}
         outline='none'
         bg='transparent'
         border='none'
@@ -53,8 +55,8 @@ const Searchbar = ({ color } : {color?: string}) => {
         onKeyDown={(e) => handleEnter(e)}
       />
 
-      <Box pos='absolute' top={{base: '1.5' , md:'2'}} right='3' cursor='pointer' className="group" onClick={() => search.length > 1 && handleSubmit()}>
-        <Search />
+      <Box color={{base: color || 'white', _dark: 'white'}} pos='absolute' top={{base: '2' , md:'2.5'}} right='3' cursor='pointer' className="group" onClick={() => search.length > 1 && handleSubmit()}>
+        <FaSearch style={{fontSize: '20px'}} color="inherit"/>
       </Box>    
     </Box>
   )
