@@ -8,7 +8,8 @@ import { Tmovie } from "../layout"
 import MovieCard from "@/components/movieCard"
 import { useMyContext } from "@/hooks/useMyContext"
 import LoadingSpinner from "@/components/loadingSpinner"
-import { useMemo } from "react"
+import { useMemo, Suspense } from "react"
+import Loader from "@/components/loader"
 
 
 const SearchPage = () => {
@@ -18,7 +19,6 @@ const SearchPage = () => {
   const { searchResult, isLoading } = useMyContext()
 
   const Result = useMemo(() => searchResult?.map((movie: Tmovie) => <MovieCard title={movie.title ? movie.title : movie.name} type={movie.title ? 'movie' : 'series'} key={movie.id} movieId={movie.id} imgSrc={ movie.poster_path} date={movie.release_date ? movie.release_date : movie.first_air_date} tag={movie.title ? false : true}/>), [searchTitle]) 
-
   // console.log(searchResult)
   return (
     <Stack as='section' pt='5' pl='2' pr='4' gap='10'>
@@ -35,7 +35,9 @@ const SearchPage = () => {
         :
         (searchTitle && searchTitle.length > 0) ? searchResult?.length > 0 ?
         <Flex pb='5' direction='row' wrap='wrap' justifyContent={{base: 'center', md:searchResult.length < 3 ? 'unset' : 'space-between', lg: searchResult.length < 6 ? 'unset' : 'space-between'}} gap={{base:'5', md: '7'}} alignItems={{base:'center', md:'start'}}>
-          {Result}
+          <Suspense fallback={<Loader />}>
+            {Result}
+          </Suspense>
         </Flex>:
         <Text alignSelf='center' fontSize='lg'> Couldn't get the results for {searchTitle} </Text> :
         <Text alignSelf='center' fontSize='lg'>Type something in the searchbox</Text>
