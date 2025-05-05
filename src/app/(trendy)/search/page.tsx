@@ -11,10 +11,11 @@ const SearchPage = () => {
   // console.log(searchResult)
   return (
     <Stack as='section' pt='5' pl='2' pr='4' gap='5'>
-      <Searchbar />
-       <Suspense fallback={<Loader />}>
-        <SearchContents />
-       </Suspense>
+      <Searchbar borderColor="black"/>
+
+      <Suspense fallback={<Loader />}>
+      <SearchContents />
+      </Suspense>
     </Stack>
   )
 }

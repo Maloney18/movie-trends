@@ -7,13 +7,15 @@ import { Box, Input } from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
 import React from "react"
 
-const Searchbar = () => {
+const Searchbar = ({ color } : {color?: string}) => {
   const { search, setSearch, setSearchResult, setIsLoading } = useMyContext()
   const router = useRouter()
 
   const handleSubmit = async() => {
     setIsLoading(true)
     try {
+      router.push(`/search?title=${search}`)
+
       const [movies, series] = await Promise.all([
         searchEndpoint(search, 'movie'),
         searchEndpoint(search, 'tv')
@@ -23,7 +25,6 @@ const Searchbar = () => {
       const filteredResult = searchResult.filter(item => item.vote_average && item.vote_average !== 0 && item?.first_air_date !== "" && item?.release_date !== "")
 
       setSearchResult(filteredResult)
-      router.push(`/search?title=${search}`)
       setIsLoading(false)
     } catch (error) {
       throw new Error(`${error}`)
@@ -39,13 +40,13 @@ const Searchbar = () => {
   }
 
   return (
-    <Box zIndex={5} pos='relative' alignSelf='center' w={{base: '80%', md:'70%', lg:'525px'}} borderWidth='1px' borderColor='white' pl='2' pr='10' rounded='lg'>
+    <Box zIndex={5} pos='relative' alignSelf='center' w={{base: '80%', md:'70%', lg:'525px'}} borderWidth='1px' borderColor={{base:color || 'white', _dark: 'white'}} pl='2' pr='10' rounded='lg'>
       <Input 
         placeholder="Let your curiosity lead"
         outline='none'
         bg='transparent'
         border='none'
-        color={{base:'white', _dark: 'white'}}
+        color={{base: color || 'white', _dark: 'white'}}
         name="search"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
