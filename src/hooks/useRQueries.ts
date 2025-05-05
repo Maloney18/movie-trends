@@ -89,7 +89,7 @@ const getDetails = async (id: string, endpoint: string, extra?: string) => {
   }
 }
 
-const searchEndpoint = async (search: string, endpoint: string) => {
+export const searchEndpoint = async (search: string, endpoint: string) => {
   try {
     const response = await fetch( `https://api.themoviedb.org/3/search/${endpoint}?query=${search}&include_adult=false&language=en-US&page=1`,
       {
@@ -144,6 +144,6 @@ export const creditsQuery = (id: string, endpoint: string) => useQuery({queryKey
 
 export const recommendationsQuery = (id: string, endpoint: string) => useQuery({queryKey: ['recommendations', id, endpoint], queryFn: ({queryKey}) => getDetails(queryKey[1], queryKey[2], 'recommendations')})
 
-export const searchQuery = (search: string, endpoint: string) => useQuery({queryKey: ['search', search, endpoint], queryFn: ({queryKey}) => searchEndpoint(queryKey[1], queryKey[2])})
+export const searchQuery = (search: string, endpoint: string) => useQuery({queryKey: ['search', search, endpoint], queryFn: ({queryKey}) => searchEndpoint(queryKey[1], queryKey[2]), enabled: !!search})
 
 export const youtubeVideoQuery = (query: string) => useQuery({queryKey: ['youtubeVideo', query], queryFn: ({queryKey}) => getYoutubeVideo(queryKey[1])})

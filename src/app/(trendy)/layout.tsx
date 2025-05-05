@@ -8,6 +8,15 @@ import { Button, Grid, GridItem } from '@chakra-ui/react'
 import { useRef, useState } from 'react'
 import { FaArrowUp } from 'react-icons/fa6'
 
+export type Tmovie = {
+  title: string,
+  poster_path: string,
+  id: string,
+  release_date: string,
+  name: string,
+  first_air_date: string,
+}
+
 const DefaultLayout = ({children}: {children: React.ReactNode}) => {
   const [showButton, setShowButton] = useState(false)
   const page = useRef<HTMLDivElement | null>(null);

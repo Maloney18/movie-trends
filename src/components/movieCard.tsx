@@ -39,7 +39,7 @@ const MovieCard = ({date, title, imgSrc, movieId, type, tag, innerRef, clicked} 
       }}
     >
       <GridItem pos='relative' h={{base:'250px', md: '200px', lg: '250px'}} w={{base:'200px', md: '150px', lg: '200px'}} bg={imgSrc ? '' : 'grey'} overflow='hidden' borderTopLeftRadius='lg' borderBottomRightRadius='lg'>
-          {(imgSrc && title) &&
+          {title &&
             <img 
             width='100%' 
             style={{
@@ -57,8 +57,8 @@ const MovieCard = ({date, title, imgSrc, movieId, type, tag, innerRef, clicked} 
           (year || title) ?
           (
             <>
-              <Text color={gray400} transition='all 0.3s ease-in'  _groupHover={{color: primaryLighter}}  _groupActive={{color: primaryLighter}} fontWeight='bold' fontSize='xs'>{year}</Text>
-              <Text color={{base:gray900, _dark: rating}} transition='all 0.5s ease-in'  _groupHover={{color: primaryColor}}  _groupActive={{color: primaryColor}} fontSize={{base:'md', lg:'lg'}} fontWeight='bold' wordWrap='break-word'>{title}</Text>
+              <Text color={gray400} transition='all 0.3s ease-in'  _groupHover={{color: primaryLighter}} fontWeight='bold' fontSize='xs'>{year}</Text>
+              <Text color={{base:gray900, _dark: rating}} transition='all 0.5s ease-in'  _groupHover={{color: primaryColor}}  _groupActive={{color: primaryColor}} fontSize={{base:'md', lg:'lg'}} fontWeight='bold' wordWrap='break-word' w='full'>{title}</Text>
             </>
           ) 
           :

@@ -9,15 +9,7 @@ import { useEffect, useRef } from "react"
 import { useInView } from "react-intersection-observer"
 import LoadingSpinner from "@/components/loadingSpinner"
 import { useMyContext } from "@/hooks/useMyContext"
-
-type movie = {
-  title: string,
-  poster_path: string,
-  id: string,
-  release_date: string,
-  name: string,
-  first_air_date: string,
-}
+import { Tmovie } from "../layout"
 
 const SeriesPage = () => { 
   const { gray900, gray400 } = Colors.light 
@@ -97,7 +89,7 @@ const SeriesPage = () => {
     setSeriesPageScrollHeight(page?.current?.offsetParent?.scrollTop || null)
   }
 
-  const series = data?.pages?.map((page) => page.results.map((movie: movie, idx : number) => {
+  const series = data?.pages?.map((page) => page.results.map((movie: Tmovie, idx : number) => {
     if (page.results.length - 6 === idx) {
       return <MovieCard clicked={handleHeight} innerRef={ref} title={movie.title ? movie.title : movie.name} type={movie.title ? 'movie' : 'series'} key={movie.id} movieId={movie.id} imgSrc={ movie.poster_path} date={movie.release_date ? movie.release_date : movie.first_air_date} tag={movie.title ? false : true}/>
     }
@@ -120,12 +112,10 @@ const SeriesPage = () => {
   return (
     <Stack gap='7' maxW='full' ref={page} pb='5'>
       <Text fontWeight='black' fontSize={{base:'2xl', lg:'4xl'}} color={{base:gray900, _dark:gray400}} alignSelf='center'> Series </Text>
-
-      <Stack gap='7' px='2'>
-        <Flex direction='row' wrap='wrap' justifyContent={{base: 'center', md:'space-between'}} gap={{base:'5', md: '7'}} alignItems={{base:'center', md:'start'}}>
-          {series}
-        </Flex>
-      </Stack>
+      
+      <Flex direction='row' wrap='wrap' justifyContent={{base: 'center', md:'space-between'}} gap={{base:'5', md: '7'}} alignItems={{base:'center', md:'start'}}>
+        {series}
+      </Flex>
     
       {
         hasNextPage && 

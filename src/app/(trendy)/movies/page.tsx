@@ -9,15 +9,7 @@ import { useEffect, useRef } from "react"
 import { useInView } from "react-intersection-observer"
 import LoadingSpinner from "@/components/loadingSpinner"
 import { useMyContext } from "@/hooks/useMyContext"
-
-type movie = {
-  title: string,
-  poster_path: string,
-  id: string,
-  release_date: string,
-  name: string,
-  first_air_date: string,
-}
+import { Tmovie } from "../layout"
 
 const MoviesPage = () => { 
   const { gray900, gray400 } = Colors.light 
@@ -97,7 +89,7 @@ const MoviesPage = () => {
     setMoviesPageScrollHeight(page?.current?.offsetParent?.scrollTop || null)
   }
 
-  const movies = data?.pages?.map((page) => page.results.map((movie: movie, idx : number) => {
+  const movies = data?.pages?.map((page) => page.results.map((movie: Tmovie, idx : number) => {
     if (page.results.length - 6 === idx) {
       return <MovieCard clicked={handleHeight} innerRef={ref} title={movie.title ? movie.title : movie.name} type={movie.title ? 'movie' : 'series'} key={movie.id} movieId={movie.id} imgSrc={ movie.poster_path} date={movie.release_date ? movie.release_date : movie.first_air_date} tag={movie.title ? false : true}/>
     }

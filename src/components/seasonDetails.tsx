@@ -40,7 +40,7 @@ const SeasonDetails = ({seasonInfo, setShowDetails}: incoming) => {
   }
 
   const {data} = useQuery({queryKey: ['seasonDetails', seasonInfo.seriesId, seasonInfo.seasonNumber], queryFn: () => getDetails(seasonInfo.seriesId, seasonInfo.seasonNumber)})
-  console.log('data', data)
+  // console.log('data', data)
 
 
   return (

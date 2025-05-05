@@ -1,5 +1,6 @@
 'use client'
 
+import { Tmovie } from "@/app/(trendy)/layout"
 import { Colors } from "./color"
 import Loader from "@/components/loader"
 import MovieCard from "@/components/movieCard"
@@ -7,19 +8,10 @@ import { SeeMore } from "@/icons/icons"
 import { Stack, HStack, Text, Flex } from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
 
-type movie = {
-  title: string,
-  poster_path: string,
-  id: string,
-  release_date: string,
-  name: string,
-  first_air_date: string,
-}
-
 type incoming = {
   title?: string,
   data: {
-    results: movie[]
+    results: Tmovie[]
   },
   isError: boolean,
   isLoading: boolean,
@@ -60,7 +52,7 @@ const Collection = ({title, data, isError, isLoading, error, url}: incoming) => 
       <Stack gap='7' px='2'>
         <Flex direction='row' wrap='wrap' justifyContent={{base: 'center', md:'space-between'}} gap={{base:'5', md: '7'}} alignItems={{base:'center', md:'start'}}>
           {
-            data.results?.slice(0,12).map((movie: movie) => (
+            data.results?.slice(0,12).map((movie: Tmovie) => (
 
               <MovieCard title={movie.title ? movie.title : movie.name} type={movie.title ? 'movie' : 'series'} key={movie.id} movieId={movie.id} imgSrc={ movie.poster_path} date={movie.release_date ? movie.release_date : movie.first_air_date} tag={movie.title ? false : true}/>
             ))

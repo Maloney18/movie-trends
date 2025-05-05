@@ -1,4 +1,5 @@
 'use client'
+import { Tmovie } from '@/app/(trendy)/layout'
 import { Dispatch, SetStateAction, useState, createContext, useContext, Ref, useRef } from 'react'
 
 type SeasonInfo = {
@@ -12,6 +13,14 @@ type SeasonContext = {
   showSeasonDetails: boolean,
   setSeasonInfo: Dispatch<SetStateAction<SeasonInfo>>,
   setShowSeasonDetails: Dispatch<SetStateAction<boolean>>,
+
+  // search info
+  search: string,
+  setSearch: Dispatch<SetStateAction<string>>
+  searchResult: Tmovie[],
+  setSearchResult: Dispatch<SetStateAction<Tmovie[]>>,
+  isLoading: boolean,
+  setIsLoading: Dispatch<SetStateAction<boolean>>
 
   // movies page and series page
   moviesPageScrollHeight: number | null,
@@ -29,6 +38,11 @@ const SeasonProvider = ({children} : { children: React.ReactNode}) => {
     seasonNumber: null
   })
   const [showSeasonDetails, setShowSeasonDetails] = useState(false)
+  
+  // search info
+  const [search, setSearch] = useState<string>('')
+  const [searchResult, setSearchResult] = useState<Tmovie[]>([])
+  const [isLoading, setIsLoading] = useState(false)
 
   //movies page and series page
   const [moviesPageScrollHeight, setMoviesPageScrollHeight] = useState<number | null>(null)
@@ -39,6 +53,7 @@ const SeasonProvider = ({children} : { children: React.ReactNode}) => {
   return (
     <Season.Provider value={{
       seasonInfo, setSeasonInfo, showSeasonDetails, setShowSeasonDetails,  // seasons details
+      search, setSearch, searchResult, setSearchResult, isLoading, setIsLoading, // search page
       moviesPageScrollHeight, setMoviesPageScrollHeight, seriesPageScrollHeight, setSeriesPageScrollHeight, // movies and series page
     }}>
       {children}

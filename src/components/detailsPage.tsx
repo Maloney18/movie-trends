@@ -223,7 +223,7 @@ const DetailsPage = ({details, credits, recommendations}: incoming) => {
         <Text fontSize='xl' fontWeight='bold'>{details.data.seasons.length > 1 ? 'Seasons' : 'Season'}</Text>
         {
           details.data.seasons.length !== 0 && 
-          <HStack overflow='scroll'  className='removeScroll' gap='5' alignItems='baseline'>
+          <HStack overflow='scroll'  className='removeScroll' gap='5' alignItems='flex-start'>
             {details.data.seasons.map((season : {poster_path: string, name: string, season_number: number, id: number, episode_count: number}) => (
               <Stack _hover={{alignSelf: 'center'}} className='group' cursor='pointer' key={season.id} maxW='250px' onClick={() => handleSeasonDetails(season.season_number)}>
                 <Box h='200px' w='200px' overflow='hidden' rounded='md'>

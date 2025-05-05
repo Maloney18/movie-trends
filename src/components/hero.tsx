@@ -6,7 +6,7 @@ import { Colors } from "./color"
 import { Suspense, useEffect, useState } from "react"
 import { heroQuery } from "@/hooks/useRQueries"
 import { useRouter } from "next/navigation"
-import { AnimatePresence, easeIn, motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 
 type movie = {
   id: string,
