@@ -4,16 +4,48 @@ import { Tmovie } from "../layout"
 import MovieCard from "@/components/movieCard"
 import { useMyContext } from "@/hooks/useMyContext"
 import LoadingSpinner from "@/components/loadingSpinner"
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { Colors } from "@/components/color"
+import { searchEndpoint } from "@/hooks/useRQueries"
 
 const SearchContents = () => {
   const searchParam = useSearchParams()
   const searchTitle = searchParam.get('title')
   const {primaryColor} = Colors.light
-  const { searchResult, isLoading } = useMyContext()
+  const { searchResult, isLoading, setIsLoading, setSearchResult, search, setSearch } = useMyContext()
+
+  const handleSearch = async() => {
+    setIsLoading(true)
+    try {
+      const [movies, series] = await Promise.all([
+        searchEndpoint(searchTitle || "", 'movie'),
+        searchEndpoint(searchTitle || "", 'tv')
+      ])
+
+      const searchResult = [...movies?.results, ...series?.results].sort((a,b) => Math.floor(b.vote_average) - Math.floor(a.vote_average))
+      const filteredResult = searchResult.filter(item => item.vote_average && item.vote_average !== 0 && item?.first_air_date !== "" && item?.release_date !== "")
+
+      setSearchResult(filteredResult)
+      setIsLoading(false)
+    } catch (error) {
+      setIsLoading(false)
+      throw new Error(`${error}`)
+    }
+    finally {
+      setIsLoading(false)
+    }
+  }
+
+  // refetch after page reloads
+  useEffect(() => {
+    if(searchTitle && search.length === 0) {
+      setSearch(searchTitle)
+      handleSearch()
+    }
+  }, [])
 
   const Result = useMemo(() => searchResult?.map((movie: Tmovie) => <MovieCard title={movie.title ? movie.title : movie.name} type={movie.title ? 'movie' : 'series'} key={movie.id} movieId={movie.id} imgSrc={ movie.poster_path} date={movie.release_date ? movie.release_date : movie.first_air_date} tag={movie.title ? false : true}/>), [searchResult]) 
+
   return (
     <Stack gap='10'>
       {searchTitle &&  <Text alignSelf='center' fontSize='lg'> Showing results for <span style={{fontWeight: 'bold', color: primaryColor}}>{searchTitle}</span></Text>}

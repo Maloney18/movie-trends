@@ -8,7 +8,6 @@ import { Suspense } from "react"
 
 
 const SearchPage = () => {
-  // console.log(searchResult)
   return (
     <Stack as='section' pt='5' pl='2' pr='4' gap='5'>
       <Searchbar color="black"/>
