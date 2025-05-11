@@ -47,7 +47,8 @@ const SeriesPage = () => {
       const currentPage = allpages.length
       const totalPages = lastpage.total_pages
       return currentPage < totalPages ? currentPage + 1 : undefined
-    }
+    },
+    staleTime: 1000 * 60 * 10, // 10 minutes
   })
 
   // unlimited scroll
@@ -119,7 +120,7 @@ const SeriesPage = () => {
     
       {
         hasNextPage && 
-        <Stack alignSelf='center' justifyContent='center' alignItems='center' w='max-content' h='max-content' rounded='full'>
+        <Stack aria-label="loading more" role="status" alignSelf='center' justifyContent='center' alignItems='center' w='max-content' h='max-content' rounded='full'>
           <LoadingSpinner />
         </Stack>
       }

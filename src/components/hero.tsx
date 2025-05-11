@@ -115,7 +115,7 @@ const Hero = () => {
             {currentMovie?.overview}
           </Text>
 
-          <Button onClick={() => router.push(`/${currentMovie?.original_title ? 'movies' : 'series'}/${currentMovie?.id}`)} bg={primaryColor} maxW={{base: '169px', md: '130px' , lg:'169px'}} p='1.5' rounded='md' color='white'>
+          <Button aria-label={currentMovie?.original_title ? 'Watch Trailer' : 'More Info'} onClick={() => router.push(`/${currentMovie?.original_title ? 'movies' : 'series'}/${currentMovie?.id}`)} bg={primaryColor} maxW={{base: '169px', md: '130px' , lg:'169px'}} p='1.5' rounded='md' color='white'>
             <HStack gap='2'>
               <Watch />
               <Text>{currentMovie?.original_title ? 'Watch Trailer' : 'More Info'}</Text>

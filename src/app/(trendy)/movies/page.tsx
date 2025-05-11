@@ -47,7 +47,8 @@ const MoviesPage = () => {
       const currentPage = allpages.length
       const totalPages = lastpage.total_pages
       return currentPage < totalPages ? currentPage + 1 : undefined
-    }
+    }, 
+    staleTime: 1000 * 60 * 10, // 10 minutes
   })
 
   // unlimited scroll
@@ -121,7 +122,7 @@ const MoviesPage = () => {
     
       {
         hasNextPage && 
-        <Stack alignSelf='center' justifyContent='center' alignItems='center' w='max-content' h='max-content' rounded='full'>
+        <Stack aria-label="Loading more videos" role="status" alignSelf='center' justifyContent='center' alignItems='center' w='max-content' h='max-content' rounded='full'>
           <LoadingSpinner color="black"/>
         </Stack>
       }

@@ -5,7 +5,7 @@ import { motion } from "framer-motion"
 const Loader = () => {
 
   return (
-    <Flex dir="row" gap='5' wrap='wrap' justifyContent='space-between' alignItems='center'>
+    <Flex dir="row" gap='5' wrap='wrap' justifyContent={{base: 'center', md:'space-between'}} alignItems='center' role="status">
       <motion.div
         initial={{opacity: 0}}
         animate={{opacity: 1}}

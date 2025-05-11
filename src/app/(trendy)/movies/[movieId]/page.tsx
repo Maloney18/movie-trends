@@ -7,11 +7,12 @@ import { FaArrowLeftLong } from 'react-icons/fa6';
 import { useRouter } from 'next/navigation';
 import { creditsQuery, detailsQuery, recommendationsQuery } from '@/hooks/useRQueries';
 import { Colors } from '@/components/color';
-import MovieDetailsLoader from '@/components/movieDetailsLoader';
+const MovieDetailsLoader = dynamic(() => import('@/components/movieDetailsLoader'))
 import PlaceholderImg from '@/assets/plalceholderImg.png'
 import ProductionCompany from '@/assets/A_minimalistic_placeholder_logo_for_a_movie_produc.png'
-import Collection from '@/components/collection';
+const Collection = dynamic(() => import('@/components/collection')) 
 import LoadingSpinner from '@/components/loadingSpinner';
+import dynamic from 'next/dynamic';
 
 type params = {
   params: Promise<{
@@ -37,7 +38,7 @@ const MovieId = ({params}: params) => {
   //   const {}
   // }
 
-  const getYoutubeVideo = async (query: string) => {
+  const getYoutubeVideo: (query: string) => Promise<void> = async (query: string) => {
     setLoading(true)
 
     try {
@@ -56,24 +57,19 @@ const MovieId = ({params}: params) => {
         throw new Error("No video found with this ID");
       }
   
-      const video = data.items.filter((movie: {snippet: {title: string}}) => movie.snippet.title.startsWith(query))
+      const video = data.items.find((movie: {snippet: {title: string}}) => movie.snippet.title.startsWith(query))
     
+      console.log(video)
       // console.log(video)
-      if (video.length !== 0) {
-        setYoutubeVideo(video[0].id.videoId)
-        setLoading(false)
-        setClicked(prevState => !prevState)
-        return
-      }
-  
-      setYoutubeVideo(data.items[0].id.videoId)
+      setYoutubeVideo(video.length > 1 ? video[0].id.videoId : data.items[0].id.videoId)
       setLoading(false)
       setClicked(prevState => !prevState)
       // console.log(); // Returns video details
       
     } catch (error) {
+      console.error('Error fetching movie trailer:', error);
+    }finally {
       setLoading(false)
-      throw new Error(`${error}`)
     }
   };
 
@@ -110,7 +106,7 @@ const MovieId = ({params}: params) => {
                 <iframe height='100%' width='100%' src={`https://www.youtube.com/embed/${youtubeVideo}`} />
               </Box>
               : 
-              <Stack onClick={() => getYoutubeVideo(details.title)} cursor='pointer' justifyContent='center' alignItems='center' bg='#00000040' rounded='full' w={{base:'80px', md:'100px'}} h={{base:'80px', md:'100px'}} backdropFilter='blur(5px)'>
+              <Stack aria-label='Play trailer' onClick={() => getYoutubeVideo(details.title)} cursor='pointer' justifyContent='center' alignItems='center' bg='#00000040' rounded='full' w={{base:'80px', md:'100px'}} h={{base:'80px', md:'100px'}} backdropFilter='blur(5px)'>
                 {loading ? <LoadingSpinner /> : <Play />}
               </Stack>
             }
@@ -184,7 +180,7 @@ const MovieId = ({params}: params) => {
                     topActors.map((actor: {id: string, name: string, character: string, profile_path: string | null}) => (
                     <Stack key={actor.id} w={{base: '120px', lg:'150px'}}>
                       <Box w={{base: '120px', lg:'150px'}} h={{base: '120px', lg:'150px'}} overflow='hidden' borderTopLeftRadius='xl' borderBottomEndRadius='xl'>
-                        <img src={actor.profile_path !== null ? `https://image.tmdb.org/t/p/w500${actor.profile_path}/` : PlaceholderImg.src} alt="" width='100%' height='100%' style={{aspectRatio: 1/1, objectFit: 'cover'}}/>
+                        <img src={actor.profile_path !== null ? `https://image.tmdb.org/t/p/w500${actor.profile_path}/` : PlaceholderImg.src} alt={actor.name} width='100%' height='100%' style={{aspectRatio: 1/1, objectFit: 'cover'}}/>
                       </Box>
 
                       <Stack gap='0' borderWidth='1px' p='1.5' pt={0} borderTopWidth={0} borderColor={primaryLighter} borderBottomLeftRadius='xl'>
@@ -207,7 +203,7 @@ const MovieId = ({params}: params) => {
                   details.production_companies.map((company : {logo_path:string | null, id:string, origin_country: string, name: string}) => (
                       <HStack key={company.id} gap='2' alignItems='start'>
                         <Box h={{base: '40px', md:'35px'}} w={{base: '40px', md:'35px'}} borderWidth='1px' overflow='hidden' rounded='full'>
-                          <img src={company.logo_path ? `https://image.tmdb.org/t/p/w500${company.logo_path}/` : ProductionCompany.src} alt='company' width='100%' height='100%' style={{aspectRatio: 1/1, objectFit: 'cover'}}/>
+                          <img src={company.logo_path ? `https://image.tmdb.org/t/p/w500${company.logo_path}/` : ProductionCompany.src} alt={company.name} width='100%' height='100%' style={{aspectRatio: 1/1, objectFit: 'cover'}}/>
                         </Box>
 
                         <Stack gap='0'>

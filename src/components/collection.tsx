@@ -26,7 +26,7 @@ const Collection = ({title, data, isError, isLoading, error, url}: incoming) => 
   if ( isLoading ) {
     return (
       <Stack gap='7'>
-        <Text fontWeight='black' fontSize='2xl' color={{base:gray900, _dark: gray400}}> {title} </Text>
+        <Text fontWeight='black' fontSize={{base:'xl', lg:'2xl'}} color={{base:gray900, _dark: gray400}}> {title} </Text>
         <Loader />
       </Stack>
     )
