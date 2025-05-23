@@ -59,7 +59,7 @@ const MovieId = ({params}: params) => {
   
       const video = data.items.find((movie: {snippet: {title: string}}) => movie.snippet.title.startsWith(query))
     
-      console.log(video)
+      // console.log(video)
       // console.log(video)
       setYoutubeVideo(video.length > 1 ? video[0].id.videoId : data.items[0].id.videoId)
       setLoading(false)
