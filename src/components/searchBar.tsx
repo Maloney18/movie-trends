@@ -6,8 +6,6 @@ import { Box, Input } from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
 import { FaSearch } from "react-icons/fa"
 import { Colors } from "./color"
-import debounce from 'lodash'
-import { useMemo } from "react"
 
 const Searchbar = ({ color } : {color?: string}) => {
   const { search, setSearch, setSearchResult, setIsLoading } = useMyContext()
