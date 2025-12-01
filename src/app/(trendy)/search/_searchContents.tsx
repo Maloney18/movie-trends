@@ -6,7 +6,6 @@ import { useMyContext } from "@/hooks/useMyContext";
 import LoadingSpinner from "@/components/loadingSpinner";
 import { useEffect, useMemo } from "react";
 import { Colors } from "@/components/color";
-import { searchEndpoint } from "@/hooks/useRQueries";
 
 const SearchContents = () => {
   const searchParam = useSearchParams();
@@ -25,8 +24,14 @@ const SearchContents = () => {
     setIsLoading(true);
     try {
       const [movies, series] = await Promise.all([
-        searchEndpoint(searchTitle || "", "movie"),
-        searchEndpoint(searchTitle || "", "tv"),
+        fetch(`/api/tmdb/search/movie?q=${searchTitle || " "}`).then((r) =>
+          r.json()
+        ),
+        fetch(`/api/tmdb/search/tv?q=${searchTitle || " "}`).then((r) =>
+          r.json()
+        ),
+        // searchEndpoint(searchTitle || "", "movie"),
+        // searchEndpoint(searchTitle || "", "tv"),
       ]);
 
       const searchResult = [...movies?.results, ...series?.results].sort(

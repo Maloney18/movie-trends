@@ -14,11 +14,12 @@ import { Colors } from "@/components/color";
 const MovieDetailsLoader = dynamic(
   () => import("@/components/movieDetailsLoader")
 );
-import PlaceholderImg from "@/assets/plalceholderImg.png";
+import PlaceholderImg from "@/assets/placeholderImg.png";
 import ProductionCompany from "@/assets/A_minimalistic_placeholder_logo_for_a_movie_produc.png";
 const Collection = dynamic(() => import("@/components/collection"));
 import LoadingSpinner from "@/components/loadingSpinner";
 import dynamic from "next/dynamic";
+import ReactPlayer from "react-player";
 
 type params = {
   params: Promise<{
@@ -77,6 +78,10 @@ const MovieId = ({ params }: params) => {
     }
 
     if (diffInDays < 0 && diffInDays >= -10) {
+      if (Math.abs(diffInDays + 1) === 1) {
+        return "Out yesterday";
+      }
+
       return `${Math.abs(diffInDays + 1)} days ago`;
     }
 
@@ -101,9 +106,7 @@ const MovieId = ({ params }: params) => {
     setLoading(true);
 
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}?part=snippet&q=${query}&type=video&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`
-      );
+      const response = await fetch(`/api/tmdb/youtube?q=${query}`);
 
       if (!response.ok) {
         setLoading(false);
@@ -134,6 +137,49 @@ const MovieId = ({ params }: params) => {
       console.error("Error fetching movie trailer:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const downloadMovie = async () => {
+    try {
+      const res = await fetch(
+        `/api/download?id=${movieId}&quality=720p&uid=${details.original_title}${movieId}`
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const streamMovie = async () => {
+    try {
+      const res = await fetch(`/api/streaming?id=${movieId}`);
+      const data = await res.json();
+
+      const uflixEntries = Object.entries(data.data).filter(([key]) =>
+        key.includes("UFLIX1")
+      );
+
+      if (!uflixEntries) {
+        throw new Error("Error occured while trying to stream");
+      }
+
+      try {
+        const proxyUrl = await fetch(
+          `/api/streaming/proxy-video?url=${encodeURIComponent(
+            uflixEntries[0][1] as string
+          )}`
+        );
+        const url = await proxyUrl.json();
+
+        if (!url) {
+          throw new Error("Error occured while trying to stream");
+        }
+
+        setYoutubeVideo(url.iframe);
+        setClicked((prevState) => !prevState);
+      } catch (error) {}
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -203,10 +249,20 @@ const MovieId = ({ params }: params) => {
           >
             {clicked ? (
               <Box h="full" w="full" pos="absolute">
-                <iframe
+                {/* <ReactPlayer
                   height="100%"
+                  controls
+                  playing
                   width="100%"
                   src={`https://www.youtube.com/embed/${youtubeVideo}`}
+                /> */}
+                <iframe
+                  // sandbox="allow-scripts allow-same-origin allow-presentation"
+                  height="100%"
+                  width="100%"
+                  // allow="autoplay"
+                  src={`https://www.youtube.com/embed/${youtubeVideo}`}
+                  // src={youtubeVideo}
                 />
               </Box>
             ) : (
@@ -281,6 +337,19 @@ const MovieId = ({ params }: params) => {
                 </Text>
               ))}
             </HStack>
+
+            {/* <HStack>
+              <Button
+                onClick={() => streamMovie()}
+                maxW={{ base: "169px", md: "130px", lg: "169px" }}
+                p="1.5"
+                rounded="md"
+                color="white"
+                bg={primaryColor}
+              >
+                Stream
+              </Button>
+            </HStack> */}
 
             <Stack gap="1" mt="3" w={{ base: "", lg: "70%" }}>
               {details.tagline && (

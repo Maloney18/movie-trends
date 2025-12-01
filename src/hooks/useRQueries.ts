@@ -19,131 +19,131 @@ import { useQuery } from "@tanstack/react-query";
 // similar: 'https://api.themoviedb.org/3/tv/240411/similar?language=en-US&page=1'
 // seasons: 'https://api.themoviedb.org/3/tv/71912/season/1?language=en-US';
 
-const API_KEY = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
-const BASE_URL = "https://www.googleapis.com/youtube/v3/search";
+// const API_KEY = process.env.YOUTUBE_KEY;
+// const BASE_URL = "https://www.googleapis.com/youtube/v3/search";
 
 
-const getTrendingEndpoint = async (endpoint: string) => {
-  try {
-    const response = await fetch(`https://api.themoviedb.org/3/trending/${endpoint}/day?language=en-US`,
-      {
-        method: 'GET',
-        headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
-        }
-      }
-    )
+// const getTrendingEndpoint = async (endpoint: string) => {
+//   try {
+//     const response = await fetch(`https://api.themoviedb.org/3/trending/${endpoint}/day?language=en-US`,
+//       {
+//         method: 'GET',
+//         headers: {
+//           accept: "application/json",
+//           Authorization: `Bearer ${process.env.SECRET_API_KEY}`,
+//         }
+//       }
+//     )
     
-    if (!response.ok) {
-      throw new Error(`An error occured while fetching ${endpoint} movies`)
-    }
+//     if (!response.ok) {
+//       throw new Error(`An error occured while fetching ${endpoint} movies`)
+//     }
 
-    return response.json()
-  } catch (error) {
-    console.log(error)
-  }
-}
+//     return response.json()
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
 
-const getEndpoint = async (endpoint: string) => {
-  try{
-    const response = await fetch(`https://api.themoviedb.org/3/movie/${endpoint}?language=en-US&page=1`,
-      {
-        method: 'GET',
-        headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
-        }
-      }
-    )
+// const getEndpoint = async (endpoint: string) => {
+//   try{
+//     const response = await fetch(`https://api.themoviedb.org/3/movie/${endpoint}?language=en-US&page=1`,
+//       {
+//         method: 'GET',
+//         headers: {
+//           accept: "application/json",
+//           Authorization: `Bearer ${process.env.SECRET_API_KEY}`,
+//         }
+//       }
+//     )
 
-    if (!response.ok) {
-      throw new Error(`an error occured while fetching ${endpoint} movies`)
-    }
+//     if (!response.ok) {
+//       throw new Error(`an error occured while fetching ${endpoint} movies`)
+//     }
     
-    return response.json()
-  } catch (error) {
-    console.log(error)
-  }
-}
+//     return response.json()
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
 
-const getDetails = async (id: string, endpoint: string, extra?: string) => {
-  try {
-    const response = await fetch( `https://api.themoviedb.org/3/${endpoint}/${id}${extra && '/'+extra}?language=en-US`,
-      {
-        method: 'GET',
-        headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
-        }
-      }
-    )
+// const getDetails = async (id: string, endpoint: string, extra?: string) => {
+//   try {
+//     const response = await fetch( `https://api.themoviedb.org/3/${endpoint}/${id}${extra && '/'+extra}?language=en-US`,
+//       {
+//         method: 'GET',
+//         headers: {
+//           accept: "application/json",
+//           Authorization: `Bearer ${process.env.SECRET_API_KEY}`,
+//         }
+//       }
+//     )
     
-    if (!response.ok) {
-      throw new Error(`An error occured while fetching ${endpoint} details`)
-    }
+//     if (!response.ok) {
+//       throw new Error(`An error occured while fetching ${endpoint} details`)
+//     }
 
-    return response.json()
-  } catch (error) {
-    console.log(error)
-  }
-}
+//     return response.json()
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
 
-export const searchEndpoint = async (search: string, endpoint: string) => {
-  try {
-    const response = await fetch( `https://api.themoviedb.org/3/search/${endpoint}?query=${search}&include_adult=false&language=en-US&page=1`,
-      {
-        method: 'GET',
-        headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
-        }
-      }
-    )
+// export const searchEndpoint = async (search: string, endpoint: string) => {
+//   try {
+//     const response = await fetch( `https://api.themoviedb.org/3/search/${endpoint}?query=${search}&include_adult=false&language=en-US&page=1`,
+//       {
+//         method: 'GET',
+//         headers: {
+//           accept: "application/json",
+//           Authorization: `Bearer ${process.env.SECRET_API_KEY}`,
+//         }
+//       }
+//     )
     
-    if (!response.ok) {
-      throw new Error(`An error occured while fetching ${endpoint} search results`)
-    }
+//     if (!response.ok) {
+//       throw new Error(`An error occured while fetching ${endpoint} search results`)
+//     }
 
-    return response.json()
-  } catch (error) {
-    console.log(error)
-  }
-}
+//     return response.json()
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
 
-export const getYoutubeVideo = async (query: string) => {
-  const response = await fetch(
-    `${BASE_URL}?part=snippet&q=${query}&type=video&key=${API_KEY}`
-  );
+// export const getYoutubeVideo = async (query: string) => {
+//   const response = await fetch(
+//     `${BASE_URL}?part=snippet&q=${query}&type=video&key=${API_KEY}`
+//   );
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch video details");
-  }
+//   if (!response.ok) {
+//     throw new Error("Failed to fetch video details");
+//   }
 
-  const data = await response.json();
+//   const data = await response.json();
 
-  if (data.items.length === 0) {
-    throw new Error("No video found with this ID");
-  }
+//   if (data.items.length === 0) {
+//     throw new Error("No video found with this ID");
+//   }
 
-  return data.items[0]; // Returns video details
-};
+//   return data.items[0]; // Returns video details
+// };
 
 
-export const heroQuery = () => useQuery({queryKey: ['hero'], queryFn: () => getTrendingEndpoint('all')})
+export const heroQuery = () => useQuery({queryKey: ['hero'], queryFn: () => fetch("/api/tmdb/trending/all").then(r => r.json())})
 
-export const seriesQuery = () => useQuery({queryKey: ['series'], queryFn: () => getTrendingEndpoint('tv')})
+export const seriesQuery = () => useQuery({queryKey: ['series'], queryFn: () => fetch("/api/tmdb/trending/tv").then(r => r.json())})
 
-export const featuredMoviewQuery = () => useQuery({queryKey: ['featured'], queryFn: () => getEndpoint('popular')})
+export const featuredMoviewQuery = () => useQuery({queryKey: ['featured'], queryFn: () => fetch("/api/tmdb/movies/popular").then(r => r.json())})
 
-export const top10Query = () => useQuery({queryKey: ['top10'], queryFn: () => getEndpoint('top_rated')})
+export const top10Query = () => useQuery({queryKey: ['top10'], queryFn: () => fetch("/api/tmdb/movies/rated").then(r => r.json())})
 
-export const detailsQuery = (id: string, endpoint: string) => useQuery({queryKey: ['movieDetails', id, endpoint], queryFn: ({queryKey}) => getDetails(queryKey[1], queryKey[2])})
+export const detailsQuery = (id: string, endpoint: string) => useQuery({queryKey: ['movieDetails', id, endpoint], queryFn: () => fetch(`/api/tmdb/details/${endpoint}/${id}`).then(r => r.json())})
 
-export const creditsQuery = (id: string, endpoint: string) => useQuery({queryKey: ['credits', id, endpoint], queryFn: ({queryKey}) => getDetails(queryKey[1], queryKey[2], 'credits')})
+export const creditsQuery = (id: string, endpoint: string) => useQuery({queryKey: ['credits', id, endpoint], queryFn: () => fetch(`/api/tmdb/details/${endpoint}/${id}?extra=credits`).then(r => r.json())})
 
-export const recommendationsQuery = (id: string, endpoint: string) => useQuery({queryKey: ['recommendations', id, endpoint], queryFn: ({queryKey}) => getDetails(queryKey[1], queryKey[2], 'recommendations')})
+export const recommendationsQuery = (id: string, endpoint: string) => useQuery({queryKey: ['recommendations', id, endpoint], queryFn: () => fetch(`/api/tmdb/details/${endpoint}/${id}?extra=recommendations`).then(r =>r.json())})
 
-export const searchQuery = (search: string, endpoint: string) => useQuery({queryKey: ['search', search, endpoint], queryFn: ({queryKey}) => searchEndpoint(queryKey[1], queryKey[2]), enabled: !!search})
+export const searchQuery = (search: string, endpoint: string) => useQuery({queryKey: ['search', search, endpoint], queryFn: () => fetch(`/api/tmdb/search/${endpoint}?q=${search}`).then(r => r.json()), enabled: !!search})
 
-export const youtubeVideoQuery = (query: string) => useQuery({queryKey: ['youtubeVideo', query], queryFn: ({queryKey}) => getYoutubeVideo(queryKey[1])})
+export const youtubeVideoQuery = (query: string) => useQuery({queryKey: ['youtubeVideo', query], queryFn: ({queryKey}) => fetch(`/api/tmdb/youtube?q=${query}`).then(r => r.json())})

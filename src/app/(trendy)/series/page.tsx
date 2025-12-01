@@ -20,14 +20,7 @@ const SeriesPage = () => {
   const getSeries = async ({ pageParam }: { pageParam: number }) => {
     try {
       const response = await fetch(
-        `https://api.themoviedb.org/3/tv/popular?language=en-US&page=${pageParam}`,
-        {
-          method: "GET",
-          headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
-          },
-        }
+        `/api/tmdb/series/popular?page=${pageParam}`
       );
 
       if (!response.ok) {
